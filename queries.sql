@@ -73,8 +73,8 @@ SELECT habit, username, buddy1, buddy2
         AND buddy2 != Username.ID
 
 --Login
----NEED TO READ: 
----NEED TO WRITE:
+---NEED TO READ: user data: username, password
+---NEED TO WRITE: None
 SELECT 
     FROM
 
