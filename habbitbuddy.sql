@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS User;
 
 
 -- category will be an integer that we have mapped with a certain habit category
+-- Contains basic general habit goal and the specific goal/ category
 -- 1: School
 -- 2: Exercise
 -- 3: Leisure
@@ -15,6 +16,7 @@ CREATE TABLE Habit (
     category integer,
 	);
 
+-- Contains all user data including hobbies and the general habit goal, but not the specific category.
 CREATE TABLE User (
 	ID integer PRIMARY KEY,
     firstName varchar(15),
@@ -26,10 +28,12 @@ CREATE TABLE User (
     dob date,
     profileURL varchar(200),
     hobby varchar(120),
-
+    habitGoal varchar(120)
 	);
 
 --schema suggested in class, doesn't require buddy relationship to be two ways
+-- Builds table pairing up buddies and habits. Users can be in the table more than once, allowing for multiple buddies.
+--      Also allows for users to be with different habits, which could allow for multiple habits at once, should we decide to implement that. 
 CREATE TABLE Buddies (
     buddy1 integer REFERENCES User(ID),
     buddy2 integer REFERENCES User(ID),
@@ -42,19 +46,19 @@ GRANT SELECT ON Habit TO PUBLIC;
 GRANT SELECT ON User TO PUBLIC;
 GRANT SELECT ON Buddies TO PUBLIC;
 
-INSERT INTO User VALUES (1, 'andrew@email.com', '(616)-123-1234', 'Andrew', '2020-08-22');
-INSERT INTO User VALUES (2, 'Dawson@email.com', '(616)-123-1234', 'Dawson', '2020-08-22');
-INSERT INTO User VALUES (3, 'Joe@email.com', '(616)-123-1234', 'Joe', '2020-08-22');
-INSERT INTO User VALUES (4, 'Belina@email.com', '(616)-123-1234', 'Belina', '2020-08-22');
-INSERT INTO User VALUES (5, 'Nathan@email.com', '(616)-123-1234', 'Nathan', '2020-08-22');
-INSERT INTO User VALUES (6, 'Kelsey@email.com', '(616)-123-1234', 'Kelsey', '2020-08-22');
+INSERT INTO User VALUES (1, 'Andrew', 'Baker', 'andrew@email.com', '(616)-123-1234', 'andba', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying');
+INSERT INTO User VALUES (2, 'Dawson', 'Buist', 'Dawson@email.com', '(616)-123-1234', 'dawbu', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying');
+INSERT INTO User VALUES (3, 'Joe', 'Pastucha', 'Joe@email.com', '(616)-123-1234', 'joepa', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying');
+INSERT INTO User VALUES (4, 'Belina', 'Sainju', 'Belina@email.com', '(616)-123-1234', 'belsa', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying');
+INSERT INTO User VALUES (5, 'Nathan', 'Strain', 'Nathan@email.com', '(616)-123-1234', 'natst', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying');
+INSERT INTO User VALUES (6, 'Kelsey', 'Yen', 'Kelsey@email.com', '(616)-123-1234', 'kelye', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying');
 
-INSERT INTO Habit VALUES (1, 'Study', 'School');
-INSERT INTO Habit VALUES (2, 'Work on Homework', 'School');
-INSERT INTO Habit VALUES (3, 'Run', 'Exercise');
-INSERT INTO Habit VALUES (4, 'Lift', 'Exercise');
-INSERT INTO Habit VALUES (5, 'Read', 'Leisure');
-INSERT INTO Habit VALUES (6, 'Spend time with friends', 'Leisure');
+INSERT INTO Habit VALUES (1, 'Study', 1);
+INSERT INTO Habit VALUES (2, 'Work on Homework', 1);
+INSERT INTO Habit VALUES (3, 'Run', 2);
+INSERT INTO Habit VALUES (4, 'Lift', 2);
+INSERT INTO Habit VALUES (5, 'Read', 3);
+INSERT INTO Habit VALUES (6, 'Spend time with friends', 3);
 
 INSERT INTO Buddies VALUES (1, 2, 1);
 INSERT INTO Buddies VALUES (3, 5, 4);
