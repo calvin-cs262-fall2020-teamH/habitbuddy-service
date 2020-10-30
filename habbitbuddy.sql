@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS User;
 -- 5: Health
 CREATE TABLE Habit (
 	ID integer PRIMARY KEY, 
+    userID integer REFERENCES User(ID)
 	habit varchar(50) NOT NULL,
     category integer,
 	);
@@ -28,7 +29,9 @@ CREATE TABLE User (
     dob date,
     profileURL varchar(200),
     hobby varchar(120),
-    habitGoal varchar(120)
+    habitGoal varchar(120),
+    notifications boolean,
+    theme varchar(6),
 	);
 
 --schema suggested in class, doesn't require buddy relationship to be two ways
