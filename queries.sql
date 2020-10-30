@@ -47,10 +47,10 @@ SELECT
     ORDER BY 
 
 --Habit Selector
----NEED TO READ:
----NEED TO WRITE:
+---NEED TO READ: user data: HabitCategory
+---NEED TO WRITE: None
 SELECT 
-    FROM
+    FROM 
 
     ORDER BY 
 
@@ -77,7 +77,6 @@ SELECT habit, username, buddy1, buddy2
 ---NEED TO WRITE: None
 SELECT 
     FROM
-
     ORDER BY 
 
 --Profile
