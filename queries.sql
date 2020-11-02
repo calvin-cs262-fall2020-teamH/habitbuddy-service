@@ -2,6 +2,7 @@
 --Date: 10.27.20
 
 --Queries to be used for various screens in the habbit buddy application
+--NOT UP TO DATE WITH THE CURRENT SCHEMA. 
 
 --Buddies
 ---NEED TO READ: list of buddies, details including firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
