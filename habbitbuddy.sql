@@ -41,7 +41,7 @@ CREATE TABLE Buddies (
     buddy1 integer REFERENCES User(ID),
     buddy2 integer REFERENCES User(ID),
     buddyHabitID integer REFERENCES Habit(ID),
-    PRIMARY KEY (buddy1, buddy2, buddy1habitID)
+    PRIMARY KEY (buddy1, buddy2, buddyHabitID)
     );
 
 -- Allow users to select data from the tables.
