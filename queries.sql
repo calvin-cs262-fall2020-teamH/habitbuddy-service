@@ -97,10 +97,12 @@ SELECT habit, firstName, lastName, buddy1, buddy2
 
 --Login
 ---NEED TO READ: user data: username, password
----NEED TO WRITE: None
+---NEED TO WRITE: None, maybe create user upon sign up 
 SELECT username, password
     FROM UserTable
     WHERE ID = ${req.params.ID}
+
+INSERT INTO UserTable VALUES ($(ID), $(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal), true, 'light')
 
 
 --Profile
