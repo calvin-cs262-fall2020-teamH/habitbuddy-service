@@ -1,22 +1,4 @@
-# a pushCS 262 Monopoly Webservice
+# CS 262 HabitBuddy Service
+This is the service repository for [HabitBuddy Project](https://github.com/calvin-cs262-fall2020-teamH/habitbuddy-project).
 
-This is the data service application for the [CS 262 sample Monopoly project](https://github.com/calvin-cs262-organization/monopoly-project) 
-and it is deployed here:
-          
-<https://cs262-monopoly-service.herokuapp.com/>
 
-It is based on the standard Heroku with Node.js tutorial.
-
-<https://devcenter.heroku.com/articles/getting-started-with-nodejs>  
-
-The database is relational with the schema specified in the `sql/` sub-directory,
- and is hosted on [ElephantSQL](https://www.elephantsql.com/). The database user
-and password are stored as Heroku configuration variables rather than in this (public) repo.
-
-We implement this sample as a separate repo to simplify Heroku integration, but 
-for lab 9, you can simply submit your code under the standard `cs262/lab09` directory. 
-For the team project, configure your Heroku app to auto-deploy the code from the
-master/main branch of your
-service repo; do this by following the instructions under the &ldquo;Deploy&rdquo; 
-tab in your application in the Heroku dashboard.
- 
