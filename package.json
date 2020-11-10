@@ -1,0 +1,20 @@
+{
+  "name": "cs262-webservice",
+  "version": "1.0.0",
+  "description": "CS 262 Webservice",
+  "main": "habitService.js",
+  "author": "kvlinden",
+  "license": "ISC",
+  "engines": {
+    "node": "12.x"
+  },
+  "main": "habitService.js",
+  "scripts": {
+    "start": "node habitService.js",
+    "start-direct": "node habitDirect.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg-promise": "^10.5.7"
+  }
+}
