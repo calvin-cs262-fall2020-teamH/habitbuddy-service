@@ -10,7 +10,8 @@ CREATE TABLE HabitCategory (
     );
 
 CREATE TABLE Habit (
-	ID integer PRIMARY KEY, 
+	ID integer PRIMARY KEY,
+	userID integer REFERENCES UserTable(ID),
 	habit varchar(50) NOT NULL,
     category varchar(50) REFERENCES HabitCategory(category)
 	);
@@ -39,6 +40,7 @@ CREATE TABLE Buddies (
     buddy1 integer REFERENCES UserTable(ID),
     buddy2 integer REFERENCES UserTable(ID),
     buddy1HabitID integer REFERENCES Habit(ID),
+    buddy2HabitID interger REFERENCES Habit(ID),
     PRIMARY KEY (buddy1, buddy2, buddy1HabitID)
     );
 
@@ -61,18 +63,18 @@ INSERT INTO UserTable VALUES (4, 'Belina', 'Sainju', 'Belina@email.com', '(616)-
 INSERT INTO UserTable VALUES (5, 'Nathan', 'Strain', 'Nathan@email.com', '(616)-123-1234', 'natst', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', false, 'light');
 INSERT INTO UserTable VALUES (6, 'Kelsey', 'Yen', 'Kelsey@email.com', '(616)-123-1234', 'kelye', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', false, 'light');
 
-INSERT INTO Habit VALUES (1, 'Study', 'School');
-INSERT INTO Habit VALUES (2, 'Work on Homework', 'School');
-INSERT INTO Habit VALUES (3, 'Run', 'Exercise');
-INSERT INTO Habit VALUES (4, 'Lift', 'Exercise');
-INSERT INTO Habit VALUES (5, 'Read', 'Leisure');
-INSERT INTO Habit VALUES (6, 'Spend time with friends', 'Leisure');
+INSERT INTO Habit VALUES (1, 1, 'Study', 'School');
+INSERT INTO Habit VALUES (2, 2, 'Work on Homework', 'School');
+INSERT INTO Habit VALUES (3, 3, 'Run', 'Exercise');
+INSERT INTO Habit VALUES (4, 4, 'Lift', 'Exercise');
+INSERT INTO Habit VALUES (5, 5, 'Read', 'Leisure');
+INSERT INTO Habit VALUES (6, 6, 'Spend time with friends', 'Leisure');
 
-INSERT INTO Buddies VALUES (1, 2, 1);
-INSERT INTO Buddies VALUES (3, 5, 4);
-INSERT INTO Buddies VALUES (4, 6, 5);
-INSERT INTO Buddies VALUES (2, 1, 1);
-INSERT INTO Buddies VALUES (5, 3, 3);
-INSERT INTO Buddies VALUES (6, 4, 6);
-INSERT INTO Buddies VALUES (1, 3, 1);
-INSERT INTO Buddies VALUES (1, 6, 1);
+INSERT INTO Buddies VALUES (1, 2, 1, 2);
+INSERT INTO Buddies VALUES (3, 5, 3, 5);
+INSERT INTO Buddies VALUES (4, 6, 4, 6);
+INSERT INTO Buddies VALUES (2, 1, 2, 1);
+INSERT INTO Buddies VALUES (5, 3, 5, 3);
+INSERT INTO Buddies VALUES (6, 4, 6, 4);
+INSERT INTO Buddies VALUES (1, 3, 1, 3);
+INSERT INTO Buddies VALUES (1, 6, 1, 6);
