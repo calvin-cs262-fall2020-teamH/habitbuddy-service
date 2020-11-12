@@ -1,11 +1,9 @@
 /**
- * This module implements a REST-inspired webservice for the Monopoly DB.
  * The database is hosted on ElephantSQL.
  *
- * Currently, the service supports the player table only.
  *
- * @author: kvlinden
- * @date: Summer, 2020
+ * @author: Andrew Baker, Nathan Strain
+ * @date: Fall, 2020
  */
 
 // Set up the database connection.
@@ -79,9 +77,12 @@ function readBuddies(req, res, next) {
             next(err);
         })
 }
-//////////////////Everything below this is unchanged from monopoly
+
 function readUser(req, res, next) {
-    db.oneOrNone(`SELECT * FROM UserTable WHERE ID=${req.params.id}`)
+    db.oneOrNone(`SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category
+    FROM UserTable, Habit
+    WHERE ID = ${req.params.ID}
+        AND UserTable.ID = userID`)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -89,7 +90,7 @@ function readUser(req, res, next) {
             next(err);
         });
 }
-
+//////////////////Everything below this is unchanged from monopoly
 function updatePlayer(req, res, next) {
     db.oneOrNone(`UPDATE Player SET email=$(email), name=$(name) WHERE id=${req.params.id} RETURNING id`, req.body)
         .then(data => {
