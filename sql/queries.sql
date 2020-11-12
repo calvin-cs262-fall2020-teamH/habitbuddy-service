@@ -92,8 +92,8 @@ SELECT habit, firstName, lastName, buddy1, buddy2
     FROM UserTable, Habit, Buddies
     WHERE userID = Username.ID
         AND habitID = Habit.ID
-        AND buddy1 != Username.ID
-        AND buddy2 != Username.ID
+        AND buddy1 != UserTable.ID
+        AND buddy2 != UserTable.ID
 
 --Login
 ---NEED TO READ: user data: username, password
