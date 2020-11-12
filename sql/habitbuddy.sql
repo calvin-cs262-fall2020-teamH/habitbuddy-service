@@ -9,13 +9,6 @@ CREATE TABLE HabitCategory (
     category varchar(50) NOT NULL PRIMARY KEY
     );
 
-CREATE TABLE Habit (
-	ID integer PRIMARY KEY,
-	userID integer REFERENCES UserTable(ID),
-	habit varchar(50) NOT NULL,
-    category varchar(50) REFERENCES HabitCategory(category)
-	);
-
 -- Contains all user data including hobbies and the general habit goal, but not the specific category.
 CREATE TABLE UserTable (
 	ID integer PRIMARY KEY,
@@ -33,6 +26,13 @@ CREATE TABLE UserTable (
     theme varchar(6)
 	);
 
+CREATE TABLE Habit (
+	ID integer PRIMARY KEY,
+	userID integer REFERENCES UserTable(ID),
+	habit varchar(50) NOT NULL,
+    category varchar(50) REFERENCES HabitCategory(category)
+	);
+
 --schema suggested in class, doesn't require buddy relationship to be two ways
 -- Builds table pairing up buddies and habits. Users can be in the table more than once, allowing for multiple buddies.
 --      Also allows for users to be with different habits, which could allow for multiple habits at once, should we decide to implement that. 
@@ -40,7 +40,7 @@ CREATE TABLE Buddies (
     buddy1 integer REFERENCES UserTable(ID),
     buddy2 integer REFERENCES UserTable(ID),
     buddy1HabitID integer REFERENCES Habit(ID),
-    buddy2HabitID interger REFERENCES Habit(ID),
+    buddy2HabitID integer REFERENCES Habit(ID),
     PRIMARY KEY (buddy1, buddy2, buddy1HabitID)
     );
 

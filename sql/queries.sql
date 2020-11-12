@@ -109,14 +109,10 @@ INSERT INTO UserTable VALUES ($(ID), $(firstName), $(lastName), $(emailAddress),
 ---NEED TO READ: user data: firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: None
 SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category
-    FROM UserTable, Habit, Buddies
-    WHERE UserTable.ID=${id}
-        AND UserTable.ID = buddy1
-        AND Habit.ID = buddy1HabitID
-
-    
-    ('SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit WHERE ID = ${id} AND UserTable.ID = userID', req.params)
-
+    FROM UserTable, Habit
+    WHERE UserTable.ID=1
+        AND Habit.userID = UserTable.ID
+        
 --Settings: NOT FINISHED, NEED PARAM STUFF
 ---NEED TO READ: Current settings information? May be stored locally
 ---NEED TO WRITE: Same as above. 
