@@ -29,6 +29,7 @@ router.get("/", readHelloMessage);
 router.get("/users", readUsers);
 router.get("/buddies", readBuddies)
 router.get("/user/:id", readUser);
+
 router.put("/players/:id", updatePlayer);
 router.post('/players', createPlayer);
 router.delete('/players/:id', deletePlayer);
@@ -79,7 +80,7 @@ function readBuddies(req, res, next) {
 }
 
 function readUser(req, res, next) {
-    db.oneOrNone(`SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit WHERE ID = ${req.params.ID} AND UserTable.ID = userID`)
+    db.oneOrNone("SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit WHERE ID = ${req.params.ID} AND UserTable.ID = userID")
         .then(data => {
             returnDataOr404(res, data);
         })
