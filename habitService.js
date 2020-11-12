@@ -56,7 +56,7 @@ function returnDataOr404(res, data) {
 }
 
 function readHelloMessage(req, res) {
-    res.send('Hello, CS 262 habitbudy service!');
+    res.send('NO, CS 262 habitbudy service!');
 }
 
 function readUsers(req, res, next) {
@@ -80,7 +80,7 @@ function readBuddies(req, res, next) {
 }
 
 function readUser(req, res, next) {
-    db.oneOrNone("SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit WHERE ID = ${req.params.ID} AND UserTable.ID = userID")
+    db.oneOrNone("SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit WHERE ID = ${id} AND UserTable.ID = userID", req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
