@@ -51,6 +51,8 @@ GRANT SELECT ON HabitCategory TO PUBLIC;
 INSERT INTO HabitCategory VALUES ('School');
 INSERT INTO HabitCategory VALUES ('Exercise');
 INSERT INTO HabitCategory VALUES ('Leisure');
+INSERT INTO HabitCategory VALUES ('Health');
+INSERT INTO HabitCategory VALUES ('Spiritual');
 
 INSERT INTO UserTable VALUES (1, 'Andrew', 'Baker', 'andrew@email.com', '(616)-123-1234', 'andba', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', false, 'light');
 INSERT INTO UserTable VALUES (2, 'Dawson', 'Buist', 'Dawson@email.com', '(616)-123-1234', 'dawbu', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', false, 'light');
@@ -72,3 +74,5 @@ INSERT INTO Buddies VALUES (4, 6, 5);
 INSERT INTO Buddies VALUES (2, 1, 1);
 INSERT INTO Buddies VALUES (5, 3, 3);
 INSERT INTO Buddies VALUES (6, 4, 6);
+INSERT INTO Buddies VALUES (1, 3, 1);
+INSERT INTO Buddies VALUES (1, 6, 1);

@@ -4,13 +4,14 @@
 --Queries to be used for various screens in the habbit buddy application
 --NOT UP TO DATE WITH THE CURRENT SCHEMA. 
 
---Buddies: I THINK THIS SHOULD WORK, BUT IT MIGHT END UP SHOWING DUPLICATES OF THE PRIMARY USERS DATA.
+--Buddies: This functions completely YESSSSSS!
 ---NEED TO READ: list of buddies, details including firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: none
 SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal
-    FROM UserTable, Buddies
-    WHERE (buddy1 = UserTable.ID
-        OR buddy2 = UserTable.ID)
+    FROM UserTable, Buddies, Habit
+    WHERE buddy1 = {TO ENTER}
+        AND buddy2 = UserTable.ID
+        AND buddy1HabitID = Habit.ID
 
     ORDER BY lastName ASC
 

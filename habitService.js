@@ -71,7 +71,7 @@ function readUsers(req, res, next) {
 }
 // updated to show a specific user's buddies
 function readBuddies(req, res, next) {
-    db.many("SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal FROM UserTable, Buddies WHERE (buddy1 = UserTable.ID OR buddy2 = UserTable.ID) AND ID=${id} ORDER BY lastName ASC", req.params)
+    db.many("SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal FROM UserTable, Buddies, Habit WHERE buddy1=${id} AND buddy2 = UserTable.ID AND buddy1HabitID = Habit.ID ORDER BY lastName ASC", req.params)
         .then(data => {
             res.send(data);
         })
