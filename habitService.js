@@ -80,7 +80,7 @@ function readBuddies(req, res, next) {
 }
 
 function readUser(req, res, next) {
-    db.oneOrNone('SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit WHERE ID = ${id} AND UserTable.ID = userID', req.params)
+    db.oneOrNone('SELECT * FROM UserTable, Habit WHERE ID = ${id} AND UserTable.ID = userID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })

@@ -113,6 +113,7 @@ SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, h
     WHERE ID = ${req.params.ID}
         AND UserTable.ID = userID
     
+    ('SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit WHERE ID = ${id} AND UserTable.ID = userID', req.params)
 
 --Settings: NOT FINISHED, NEED PARAM STUFF
 ---NEED TO READ: Current settings information? May be stored locally
