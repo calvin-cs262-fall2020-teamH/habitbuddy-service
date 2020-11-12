@@ -9,7 +9,7 @@
 ---NEED TO WRITE: none
 SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal
     FROM UserTable, Buddies, Habit
-    WHERE buddy1 = {TO ENTER}
+    WHERE buddy1={id}
         AND buddy2 = UserTable.ID
         AND buddy1HabitID = Habit.ID
 
@@ -89,12 +89,11 @@ SELECT *
 --Home
 ---NEED TO READ: List of buddies, days of habits tracked, user's habit
 ---NEED TO WRITE: habit stacker information
-SELECT habit, firstName, lastName, buddy1, buddy2
+SELECT habit, firstName, lastName, buddy2
     FROM UserTable, Habit, Buddies
-    WHERE userID = Username.ID
-        AND habitID = Habit.ID
-        AND buddy1 != UserTable.ID
-        AND buddy2 != UserTable.ID
+    WHERE UserTable.ID={id}
+        AND UserTable.ID = buddy1
+        AND Habit.ID = buddy1HabitID
 
 --Login
 ---NEED TO READ: user data: username, password
@@ -109,10 +108,12 @@ INSERT INTO UserTable VALUES ($(ID), $(firstName), $(lastName), $(emailAddress),
 --Profile
 ---NEED TO READ: user data: firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: None
-SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category
-    FROM UserTable, Habit
-    WHERE ID = ${req.params.ID}
-        AND UserTable.ID = userID
+SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category
+    FROM UserTable, Habit, Buddies
+    WHERE UserTable.ID=${id}
+        AND UserTable.ID = buddy1
+        AND Habit.ID = buddy1HabitID
+
     
     ('SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit WHERE ID = ${id} AND UserTable.ID = userID', req.params)
 

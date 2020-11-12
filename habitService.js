@@ -81,7 +81,7 @@ function readBuddies(req, res, next) {
 }
 
 function readUser(req, res, next) {
-    db.oneOrNone('SELECT * FROM UserTable WHERE ID=${id}', req.params)
+    db.oneOrNone('SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit, Buddies WHERE UserTable.ID=${id} AND UserTable.ID = buddy1 AND Habit.ID = buddy1HabitID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -89,9 +89,9 @@ function readUser(req, res, next) {
             next(err);
         });
 }
-// NEW: FUNCTIONALLITY UNKNOWN
+
 function readHome(req, res, next) {
-    db.oneOrNone('SELECT habit, firstName, lastName, buddy1, buddy2 FROM UserTable, Habit, Buddies WHERE ID=${id} AND habitID = Habit.ID AND buddy1 != UserTable.ID AND buddy2 != UserTable.ID', req.params)
+    db.oneOrNone('SELECT habit, firstName, lastName, buddy2 FROM UserTable, Habit, Buddies WHERE UserTable.ID={id} AND UserTable.ID = buddy1 AND Habit.ID = buddy1HabitID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
