@@ -91,7 +91,7 @@ function readUser(req, res, next) {
 }
 
 function readHome(req, res, next) {
-    db.many('SELECT habit, firstName, lastName, buddy2 FROM UserTable, Habit, Buddies WHERE UserTable.ID={id} AND UserTable.ID = buddy1 AND Habit.ID = buddy1HabitID', req.params)
+    db.many('SELECT habit, firstName, lastName, buddy2 FROM UserTable, Habit, Buddies WHERE UserTable.ID=${id} AND UserTable.ID = buddy1 AND Habit.ID = buddy1HabitID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
