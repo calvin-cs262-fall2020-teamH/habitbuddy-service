@@ -28,7 +28,7 @@ router.use(express.json());
 router.get("/", readHelloMessage);
 router.get("/users", readUsers);
 router.get("/buddies", readBuddies)
-router.get("/users/:id", readUser);
+router.get("/user/:id", readUser);
 router.put("/players/:id", updatePlayer);
 router.post('/players', createPlayer);
 router.delete('/players/:id', deletePlayer);
