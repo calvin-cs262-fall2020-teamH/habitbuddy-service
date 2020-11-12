@@ -86,7 +86,7 @@ SELECT *
     FROM 
     WHERE 
 
---Home
+--Home: FUNCTIONAL, LISTS OUT MULTIPLE ENTRIES, NUMBER OF ENTRIES = NUMBER OF BUDDIES.
 ---NEED TO READ: List of buddies, days of habits tracked, user's habit
 ---NEED TO WRITE: habit stacker information
 SELECT habit, firstName, lastName, buddy2

@@ -81,7 +81,7 @@ function readBuddies(req, res, next) {
 }
 
 function readUser(req, res, next) {
-    db.oneOrNone('SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit, Buddies WHERE UserTable.ID=${id} AND UserTable.ID = buddy1 AND Habit.ID = buddy1HabitID', req.params)
+    db.many('SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit, Buddies WHERE UserTable.ID=${id} AND UserTable.ID = buddy1 AND Habit.ID = buddy1HabitID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -91,7 +91,7 @@ function readUser(req, res, next) {
 }
 
 function readHome(req, res, next) {
-    db.oneOrNone('SELECT habit, firstName, lastName, buddy2 FROM UserTable, Habit, Buddies WHERE UserTable.ID={id} AND UserTable.ID = buddy1 AND Habit.ID = buddy1HabitID', req.params)
+    db.many('SELECT habit, firstName, lastName, buddy2 FROM UserTable, Habit, Buddies WHERE UserTable.ID={id} AND UserTable.ID = buddy1 AND Habit.ID = buddy1HabitID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
