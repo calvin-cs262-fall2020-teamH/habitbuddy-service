@@ -7,12 +7,11 @@
 --Buddies: This functions completely YESSSSSS!
 ---NEED TO READ: list of buddies, details including firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: none
-SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal
+SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, streak
     FROM UserTable, Buddies, Habit
     WHERE buddy1={id}
         AND buddy2 = UserTable.ID
         AND buddy1HabitID = Habit.ID
-
     ORDER BY lastName ASC
 
 --Edit Profile
@@ -86,14 +85,13 @@ SELECT *
     FROM 
     WHERE 
 
---Home: FUNCTIONAL, LISTS OUT MULTIPLE ENTRIES, NUMBER OF ENTRIES = NUMBER OF BUDDIES.
+-- Home
 ---NEED TO READ: List of buddies, days of habits tracked, user's habit
 ---NEED TO WRITE: habit stacker information
-SELECT habit, firstName, lastName, buddy2
-    FROM UserTable, Habit, Buddies
+SELECT habit, firstName, lastName, totalBuddies, streak
+    FROM UserTable, Habit
     WHERE UserTable.ID={id}
-        AND UserTable.ID = buddy1
-        AND Habit.ID = buddy1HabitID
+        AND Habit.ID = UserTable.ID
 
 --Login
 ---NEED TO READ: user data: username, password
@@ -108,7 +106,7 @@ INSERT INTO UserTable VALUES ($(ID), $(firstName), $(lastName), $(emailAddress),
 --Profile
 ---NEED TO READ: user data: firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: None
-SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category
+SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category, totalBuddies, streak
     FROM UserTable, Habit
     WHERE UserTable.ID=1
         AND Habit.userID = UserTable.ID

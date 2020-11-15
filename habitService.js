@@ -71,7 +71,7 @@ function readUsers(req, res, next) {
 }
 // updated to show a specific user's buddies
 function readBuddies(req, res, next) {
-    db.many("SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal FROM UserTable, Buddies, Habit WHERE buddy1={id} AND buddy2 = UserTable.ID AND buddy1HabitID = Habit.ID ORDER BY lastName ASC", req.params)
+    db.many("SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, streak FROM UserTable, Buddies, Habit WHERE buddy1={id} AND buddy2 = UserTable.ID AND buddy1HabitID = Habit.ID ORDER BY lastName ASC", req.params)
         .then(data => {
             res.send(data);
         })
@@ -81,7 +81,7 @@ function readBuddies(req, res, next) {
 }
 
 function readUser(req, res, next) {
-    db.many('SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category FROM UserTable, Habit WHERE UserTable.ID=1 AND Habit.userID = UserTable.ID', req.params)
+    db.many('SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=1 AND Habit.userID = UserTable.ID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -91,7 +91,7 @@ function readUser(req, res, next) {
 }
 
 function readHome(req, res, next) {
-    db.many('SELECT habit, firstName, lastName, buddy2 FROM UserTable, Habit, Buddies WHERE UserTable.ID=${id} AND UserTable.ID = buddy1 AND Habit.ID = buddy1HabitID', req.params)
+    db.many('SELECT habit, firstName, lastName, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID={id} AND Habit.ID = UserTable.ID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })

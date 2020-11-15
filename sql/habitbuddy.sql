@@ -22,6 +22,8 @@ CREATE TABLE UserTable (
     profileURL varchar(200) NOT NULL,
     hobby varchar(120),
     habitGoal varchar(120),
+    totalBuddies integer,
+    streak integer,
     notifications boolean,
     theme varchar(6)
 	);
@@ -56,12 +58,12 @@ INSERT INTO HabitCategory VALUES ('Leisure');
 INSERT INTO HabitCategory VALUES ('Health');
 INSERT INTO HabitCategory VALUES ('Spiritual');
 
-INSERT INTO UserTable VALUES (1, 'Andrew', 'Baker', 'andrew@email.com', '(616)-123-1234', 'andba', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', false, 'light');
-INSERT INTO UserTable VALUES (2, 'Dawson', 'Buist', 'Dawson@email.com', '(616)-123-1234', 'dawbu', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', false, 'light');
-INSERT INTO UserTable VALUES (3, 'Joe', 'Pastucha', 'Joe@email.com', '(616)-123-1234', 'joepa', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', false, 'light');
-INSERT INTO UserTable VALUES (4, 'Belina', 'Sainju', 'Belina@email.com', '(616)-123-1234', 'belsa', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', false, 'light');
-INSERT INTO UserTable VALUES (5, 'Nathan', 'Strain', 'Nathan@email.com', '(616)-123-1234', 'natst', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', false, 'light');
-INSERT INTO UserTable VALUES (6, 'Kelsey', 'Yen', 'Kelsey@email.com', '(616)-123-1234', 'kelye', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', false, 'light');
+INSERT INTO UserTable VALUES (1, 'Andrew', 'Baker', 'andrew@email.com', '(616)-123-1234', 'andba', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', 3, 0, false, 'light');
+INSERT INTO UserTable VALUES (2, 'Dawson', 'Buist', 'Dawson@email.com', '(616)-123-1234', 'dawbu', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', 1, 0, false, 'light');
+INSERT INTO UserTable VALUES (3, 'Joe', 'Pastucha', 'Joe@email.com', '(616)-123-1234', 'joepa', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', 1, 0, false, 'light');
+INSERT INTO UserTable VALUES (4, 'Belina', 'Sainju', 'Belina@email.com', '(616)-123-1234', 'belsa', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', 1, 0, false, 'light');
+INSERT INTO UserTable VALUES (5, 'Nathan', 'Strain', 'Nathan@email.com', '(616)-123-1234', 'natst', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', 1, 0, false, 'light');
+INSERT INTO UserTable VALUES (6, 'Kelsey', 'Yen', 'Kelsey@email.com', '(616)-123-1234', 'kelye', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.suYiHgQnIAH_48Q64UHAQAHaHa?pid=Api&rs=1', 'Reading', 'studying', 1, 0, false, 'light');
 
 INSERT INTO Habit VALUES (1, 1, 'Study', 'School');
 INSERT INTO Habit VALUES (2, 2, 'Work on Homework', 'School');
