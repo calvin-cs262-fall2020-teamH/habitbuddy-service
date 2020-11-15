@@ -9,7 +9,7 @@
 ---NEED TO WRITE: none
 SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, streak
     FROM UserTable, Buddies, Habit
-    WHERE buddy1={id}
+    WHERE buddy1=${id}
         AND buddy2 = UserTable.ID
         AND buddy1HabitID = Habit.ID
     ORDER BY lastName ASC
@@ -90,7 +90,7 @@ SELECT *
 ---NEED TO WRITE: habit stacker information
 SELECT habit, firstName, lastName, totalBuddies, streak
     FROM UserTable, Habit
-    WHERE UserTable.ID={id}
+    WHERE UserTable.ID=${id}
         AND Habit.ID = UserTable.ID
 
 --Login
@@ -108,7 +108,7 @@ INSERT INTO UserTable VALUES ($(ID), $(firstName), $(lastName), $(emailAddress),
 ---NEED TO WRITE: None
 SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category, totalBuddies, streak
     FROM UserTable, Habit
-    WHERE UserTable.ID=1
+    WHERE UserTable.ID=${id}
         AND Habit.userID = UserTable.ID
         
 --Settings: NOT FINISHED, NEED PARAM STUFF
