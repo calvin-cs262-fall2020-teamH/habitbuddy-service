@@ -4,7 +4,7 @@
 --Queries to be used for various screens in the habbit buddy application
 --NOT UP TO DATE WITH THE CURRENT SCHEMA. 
 
---Buddies: This functions completely YESSSSSS!
+--Buddies: FINISHED
 ---NEED TO READ: list of buddies, details including firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: none
 SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, streak
@@ -17,24 +17,15 @@ SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, s
 --Edit Profile
 ---NEED TO READ: Current user data, firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: Everything from above
-SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, 
-    FROM UserTable
-    WHERE ID = ${req.params.ID}
-
 UPDATE UserTable
     SET firstName=$(),                      --UPDATE
         lastName=$(),                       --UPDATE
         emailAddress=$(),                   --UPDATE
         phone=$(),                          --UPDATE
-        username=$(username),
-        password=$(password),
         dob=$(),                            --UPDATE
         profileURL=$(),                     --UPDATE
         hobby=$(),                          --UPDATE
         habitGoal=$(),                      --UPDATE
-        notifications=$(notifications),
-        theme=$(theme)
-
     WHERE ID = ${req.params.ID}
 
 --Empty Habits 
@@ -85,7 +76,7 @@ SELECT *
     FROM 
     WHERE 
 
--- Home
+-- Home: FINISHED
 ---NEED TO READ: List of buddies, days of habits tracked, user's habit
 ---NEED TO WRITE: habit stacker information
 SELECT habit, firstName, lastName, totalBuddies, streak
@@ -93,13 +84,13 @@ SELECT habit, firstName, lastName, totalBuddies, streak
     WHERE UserTable.ID=${id}
         AND Habit.ID = UserTable.ID
 
---Login
+--Login: FINISHED 
 ---NEED TO READ: user data: username, password
 SELECT ID
     FROM UserTable
     WHERE username = ${username}
         AND password = ${pass}
-        
+-- Login
 ---NEED TO WRITE: None, maybe create user upon sign up 
 INSERT INTO UserTable VALUES ($(ID), $(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal), true, 'light')
 
@@ -117,4 +108,4 @@ SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, ha
 ---NEED TO WRITE: Same as above. 
 SELECT password, notifications, theme
     FROM UserTable
-    WHERE UserTable.ID = ${req.params.ID}
+    WHERE UserTable.ID = ${id}
