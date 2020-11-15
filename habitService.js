@@ -30,6 +30,7 @@ router.get("/users", readUsers);
 router.get("/buddies/:id", readBuddies)
 router.get("/user/:id", readUser);
 router.get("/home/:id", readHome);
+router.get("/login/:username/:pass", login);
 
 router.put("/players/:id", updatePlayer);
 router.post('/players', createPlayer);
@@ -69,7 +70,7 @@ function readUsers(req, res, next) {
             next(err);
         })
 }
-// updated to show a specific user's buddies
+
 function readBuddies(req, res, next) {
     db.many("SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, streak FROM UserTable, Buddies, Habit WHERE buddy1=${id} AND buddy2 = UserTable.ID AND buddy1HabitID = Habit.ID ORDER BY lastName ASC", req.params)
         .then(data => {
@@ -100,7 +101,15 @@ function readHome(req, res, next) {
         });
 }
 
-
+function login(req, res, next) {
+    db.many('SELECT ID FROM UserTable WHERE username = ${username} AND password = ${pass}', req.params)
+        .then(data => {
+            returnDataOr404(res, data);
+        })
+        .catch(err => {
+            next(err);
+        });
+}
 //////////////////Everything below this is unchanged from monopoly
 function updatePlayer(req, res, next) {
     db.oneOrNone(`UPDATE Player SET email=$(email), name=$(name) WHERE id=${req.params.id} RETURNING id`, req.body)

@@ -95,15 +95,16 @@ SELECT habit, firstName, lastName, totalBuddies, streak
 
 --Login
 ---NEED TO READ: user data: username, password
----NEED TO WRITE: None, maybe create user upon sign up 
-SELECT username, password
+SELECT ID
     FROM UserTable
-    WHERE ID = ${req.params.ID}
-
+    WHERE username = ${username}
+        AND password = ${pass}
+        
+---NEED TO WRITE: None, maybe create user upon sign up 
 INSERT INTO UserTable VALUES ($(ID), $(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal), true, 'light')
 
 
---Profile
+--Profile: FINISHED
 ---NEED TO READ: user data: firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: None
 SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category, totalBuddies, streak
@@ -116,4 +117,4 @@ SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, ha
 ---NEED TO WRITE: Same as above. 
 SELECT password, notifications, theme
     FROM UserTable
-    WHERE ID = ${req.params.ID}
+    WHERE UserTable.ID = ${req.params.ID}
