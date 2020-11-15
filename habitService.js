@@ -1,11 +1,9 @@
 /**
- * This module implements a REST-inspired webservice for the Monopoly DB.
  * The database is hosted on ElephantSQL.
  *
- * Currently, the service supports the player table only.
  *
- * @author: kvlinden
- * @date: Summer, 2020
+ * @author: Andrew Baker, Nathan Strain
+ * @date: Fall, 2020
  */
 
 // Set up the database connection.
@@ -29,8 +27,11 @@ router.use(express.json());
 
 router.get("/", readHelloMessage);
 router.get("/users", readUsers);
-router.get("/buddies", readBuddies)
-router.get("/users/:id", readUser);
+router.get("/buddies/:id", readBuddies)
+router.get("/user/:id", readUser);
+router.get("/home/:id", readHome);
+router.get("/login/:username/:pass", login);
+
 router.put("/players/:id", updatePlayer);
 router.post('/players', createPlayer);
 router.delete('/players/:id', deletePlayer);
@@ -71,7 +72,7 @@ function readUsers(req, res, next) {
 }
 
 function readBuddies(req, res, next) {
-    db.many("SELECT * FROM Buddies")
+    db.many("SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, streak FROM UserTable, Buddies, Habit WHERE buddy1=${id} AND buddy2 = UserTable.ID AND buddy1HabitID = Habit.ID ORDER BY lastName ASC", req.params)
         .then(data => {
             res.send(data);
         })
@@ -79,9 +80,9 @@ function readBuddies(req, res, next) {
             next(err);
         })
 }
-//////////////////Everything below this is unchanged from monopoly
+
 function readUser(req, res, next) {
-    db.oneOrNone(`SELECT * FROM UserTable WHERE ID=${req.params.id}`)
+    db.many('SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -90,6 +91,26 @@ function readUser(req, res, next) {
         });
 }
 
+function readHome(req, res, next) {
+    db.many('SELECT habit, firstName, lastName, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.ID = UserTable.ID', req.params)
+        .then(data => {
+            returnDataOr404(res, data);
+        })
+        .catch(err => {
+            next(err);
+        });
+}
+
+function login(req, res, next) {
+    db.many('SELECT ID FROM UserTable WHERE username = ${username} AND password = ${pass}', req.params)
+        .then(data => {
+            returnDataOr404(res, data);
+        })
+        .catch(err => {
+            next(err);
+        });
+}
+//////////////////Everything below this is unchanged from monopoly
 function updatePlayer(req, res, next) {
     db.oneOrNone(`UPDATE Player SET email=$(email), name=$(name) WHERE id=${req.params.id} RETURNING id`, req.body)
         .then(data => {

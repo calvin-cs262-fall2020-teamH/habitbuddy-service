@@ -4,37 +4,28 @@
 --Queries to be used for various screens in the habbit buddy application
 --NOT UP TO DATE WITH THE CURRENT SCHEMA. 
 
---Buddies: I THINK THIS SHOULD WORK, BUT IT MIGHT END UP SHOWING DUPLICATES OF THE PRIMARY USERS DATA.
+--Buddies: FINISHED
 ---NEED TO READ: list of buddies, details including firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: none
-SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal
-    FROM UserTable, Buddies
-    WHERE (buddy1 = UserTable.ID
-        OR buddy2 = UserTable.ID)
-
+SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, streak
+    FROM UserTable, Buddies, Habit
+    WHERE buddy1=${id}
+        AND buddy2 = UserTable.ID
+        AND buddy1HabitID = Habit.ID
     ORDER BY lastName ASC
 
 --Edit Profile
 ---NEED TO READ: Current user data, firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: Everything from above
-SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, 
-    FROM UserTable
-    WHERE ID = ${req.params.ID}
-
 UPDATE UserTable
     SET firstName=$(),                      --UPDATE
         lastName=$(),                       --UPDATE
         emailAddress=$(),                   --UPDATE
         phone=$(),                          --UPDATE
-        username=$(username),
-        password=$(password),
         dob=$(),                            --UPDATE
         profileURL=$(),                     --UPDATE
         hobby=$(),                          --UPDATE
         habitGoal=$(),                      --UPDATE
-        notifications=$(notifications),
-        theme=$(theme)
-
     WHERE ID = ${req.params.ID}
 
 --Empty Habits 
@@ -85,38 +76,36 @@ SELECT *
     FROM 
     WHERE 
 
---Home
+-- Home: FINISHED
 ---NEED TO READ: List of buddies, days of habits tracked, user's habit
 ---NEED TO WRITE: habit stacker information
-SELECT habit, firstName, lastName, buddy1, buddy2
-    FROM UserTable, Habit, Buddies
-    WHERE userID = Username.ID
-        AND habitID = Habit.ID
-        AND buddy1 != Username.ID
-        AND buddy2 != Username.ID
+SELECT habit, firstName, lastName, totalBuddies, streak
+    FROM UserTable, Habit
+    WHERE UserTable.ID=${id}
+        AND Habit.ID = UserTable.ID
 
---Login
+--Login: FINISHED 
 ---NEED TO READ: user data: username, password
----NEED TO WRITE: None, maybe create user upon sign up 
-SELECT username, password
+SELECT ID
     FROM UserTable
-    WHERE ID = ${req.params.ID}
-
+    WHERE username = ${username}
+        AND password = ${pass}
+-- Login
+---NEED TO WRITE: None, maybe create user upon sign up 
 INSERT INTO UserTable VALUES ($(ID), $(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal), true, 'light')
 
 
---Profile
+--Profile: FINISHED
 ---NEED TO READ: user data: firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 ---NEED TO WRITE: None
-SELECT firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category
+SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category, totalBuddies, streak
     FROM UserTable, Habit
-    WHERE ID = ${req.params.ID}
-        AND UserTable.ID = userID
-    
-
+    WHERE UserTable.ID=${id}
+        AND Habit.userID = UserTable.ID
+        
 --Settings: NOT FINISHED, NEED PARAM STUFF
 ---NEED TO READ: Current settings information? May be stored locally
 ---NEED TO WRITE: Same as above. 
 SELECT password, notifications, theme
     FROM UserTable
-    WHERE ID = ${req.params.ID}
+    WHERE UserTable.ID = ${id}
