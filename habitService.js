@@ -103,7 +103,7 @@ function readHome(req, res, next) {
 }
 
 function login(req, res, next) {
-    db.many('SELECT ID FROM UserTable WHERE username = ${username} AND password = ${pass}', req.params)
+    db.oneOrNone('SELECT ID FROM UserTable WHERE username = ${username} AND password = ${pass}', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
