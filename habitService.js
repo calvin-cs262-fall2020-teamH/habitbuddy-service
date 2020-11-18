@@ -32,9 +32,10 @@ router.get("/user/:id", readUser);
 router.get("/home/:id", readHome);
 router.get("/login/:username/:pass", login);
 
-router.put("/players/:id", updatePlayer);
-router.post('/players', createPlayer);
-router.delete('/players/:id', deletePlayer);
+router.put("/user/:id", updateUser);
+router.post('/user', createUser);
+router.post('/habit', createHabit);
+router.delete('/user/:id', deleteUser);
 
 app.use(router);
 app.use(errorHandler);
@@ -110,9 +111,9 @@ function login(req, res, next) {
             next(err);
         });
 }
-//////////////////Everything below this is unchanged from monopoly
-function updatePlayer(req, res, next) {
-    db.oneOrNone(`UPDATE Player SET email=$(email), name=$(name) WHERE id=${req.params.id} RETURNING id`, req.body)
+
+function updateUser(req, res, next) {
+    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(), phone=$(), profileURL=$(), hobby=$(), habitGoal=$(), WHERE id=${id} RETURNING id`, req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -121,8 +122,8 @@ function updatePlayer(req, res, next) {
         });
 }
 
-function createPlayer(req, res, next) {
-    db.one(`INSERT INTO Player(email, name) VALUES ($(email), $(name)) RETURNING id`, req.body)
+function createUser(req, res, next) {
+    db.one(`INSERT INTO UserTable VALUES (firstName, lastName, email, phone, username, password, dob, profileURL, hobby, habitGoal, 0, 0, false, 'light'); VALUES ($(firstName), $(lastName), $(email), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal)) RETURNING id`, req.body)
         .then(data => {
             res.send(data);
         })
@@ -131,8 +132,18 @@ function createPlayer(req, res, next) {
         });
 }
 
-function deletePlayer(req, res, next) {
-    db.oneOrNone(`DELETE FROM Player WHERE id=${req.params.id} RETURNING id`)
+function createHabit(req, res, next) {
+    db.one(`INSERT INTO Habit VALUES (habit, category); VALUES ($(habit), $(category)) RETURNING id`, req.body)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            next(err);
+        });
+}
+
+function deleteUser(req, res, next) {
+    db.oneOrNone(`DELETE FROM UserTable WHERE id=${req.params.id} RETURNING id`)
         .then(data => {
             returnDataOr404(res, data);
         })
