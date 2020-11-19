@@ -59,7 +59,7 @@ function returnDataOr404(res, data) {
 }
 
 function readHelloMessage(req, res) {
-    res.send('Hello, CS 262 habitbudy service!');
+    res.send('Hello, CS 262 HabitBuddy Service!');
 }
 
 function readUsers(req, res, next) {
