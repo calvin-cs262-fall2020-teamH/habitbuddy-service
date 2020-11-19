@@ -28,7 +28,7 @@ UPDATE UserTable
         habitGoal=$(),                      --UPDATE
     WHERE ID = ${req.params.ID}
 
---Empty Habits 
+--Signup Habits 
 ---NEED TO READ: None
 ---NEED TO WRITE: habits, written specifically to the userprofile
 
@@ -49,7 +49,7 @@ UPDATE UserTable
     WHERE ID = ${req.params.ID}
 
 
---Empty Profile
+--Signup Profile
 ---NEED TO READ: None
 ---NEED TO WRITE: Writing all user profile data. Similar to the edit profile. Current user data, firstName, lastName, habitGoal, habitCategory, hobby, email, profile url
 
@@ -90,6 +90,7 @@ SELECT ID
     FROM UserTable
     WHERE username = ${username}
         AND password = ${pass}
+        
 -- Login
 ---NEED TO WRITE: None, maybe create user upon sign up 
 INSERT INTO UserTable VALUES ($(ID), $(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal), true, 'light')
