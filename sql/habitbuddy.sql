@@ -19,7 +19,7 @@ CREATE TABLE UserTable (
 	username varchar(50) NOT NULL,
     password varchar(20) NOT NULL,
     dob date,
-    profileURL varchar(200) NOT NULL,
+    profileURL varchar(300) NOT NULL,
     hobby varchar(120),
     habitGoal varchar(120),
     totalBuddies integer,
