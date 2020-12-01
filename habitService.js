@@ -26,7 +26,7 @@ const router = express.Router();
 router.use(express.json());
 
 router.get("/", readHelloMessage);
-router.get("/users", readUsers);
+router.get("/users/:category", readUsers);
 router.get("/buddies/:id", readBuddies)
 router.get("/user/:id", readUser);
 router.get("/home/:id", readHome);
@@ -35,7 +35,9 @@ router.get("/login/:username/:pass", login);
 router.put("/user/:id", updateUser);
 router.post('/user', createUser);
 router.post('/habit', createHabit);
+router.post('/buddies', createBuddies);
 router.delete('/user/:id', deleteUser);
+router.delete('/user/:userID/:notFriendID', deleteBuddy);
 
 app.use(router);
 app.use(errorHandler);
@@ -63,7 +65,7 @@ function readHelloMessage(req, res) {
 }
 
 function readUsers(req, res, next) {
-    db.many("SELECT username FROM UserTable")
+    db.many("SELECT UserTable.ID FROM UserTable, Habit WHERE Habit.category=$(category)", req.params)
         .then(data => {
             res.send(data);
         })
@@ -113,7 +115,7 @@ function login(req, res, next) {
 }
 
 function updateUser(req, res, next) {
-    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(), phone=$(), profileURL=$(), hobby=$(), habitGoal=$(), WHERE id=${id} RETURNING id`, req.params)
+    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(body.email), phone=$(body.phone), profileURL=$(body.URL), hobby=$(body.hobby), habitGoal=$(body.habitGoal) WHERE id=${params.id} RETURNING id`, req)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -133,7 +135,17 @@ function createUser(req, res, next) {
 }
 
 function createHabit(req, res, next) {
-    db.one(`INSERT INTO Habit VALUES (habit, category); VALUES ($(habit), $(category)) RETURNING id`, req.body)
+    db.one(`INSERT INTO Habit VALUES (userID, habit, category); VALUES ($(ID), $(habit), $(category)) RETURNING ID`, req.body)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            next(err);
+        });
+}
+
+function createBuddies(req, res, next) {
+    db.one(`INSERT INTO Buddies VALUES (buddy1, buddy2, buddy1HabitID, buddy2HabitID); VALUES ($(userID), $(buddyID), $(userHabitID), $(buddyHabitID)) RETURNING id`, req.body)
         .then(data => {
             res.send(data);
         })
@@ -144,6 +156,16 @@ function createHabit(req, res, next) {
 
 function deleteUser(req, res, next) {
     db.oneOrNone(`DELETE FROM UserTable WHERE id=${req.params.id} RETURNING id`)
+        .then(data => {
+            returnDataOr404(res, data);
+        })
+        .catch(err => {
+            next(err);
+        });
+}
+
+function deleteBuddy(req, res, next) {
+    db.oneOrNone(`DELETE FROM Buddies WHERE buddy1=${userID} AND buddy2=${notFriendID} RETURNING buddy1`, req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
