@@ -78,7 +78,7 @@ function readUsers(req, res, next) {
 }
 
 function readBuddies(req, res, next) {
-    db.many("SELECT Usertable.ID, firstName, lastName, emailAddress, phone, profileURL, hobby, habit, habitGoal, streak, Habit.category FROM UserTable, Buddies, Habit WHERE buddy1=${id} AND buddy2 = UserTable.ID AND buddy2HabitID = Habit.ID ORDER BY lastName ASC"
+    db.many("SELECT Usertable.ID, firstName, lastName, emailAddress, phone, profileURL, hobby, habit, habitGoal, streak, Habit.category FROM UserTable, Buddies, Habit WHERE buddy1=${id} AND buddy2 = UserTable.ID AND buddy2HabitID = Habit.ID"
     + " UNION SELECT Usertable.ID, firstName, lastName, emailAddress, phone, profileURL, hobby, habit, habitGoal, streak, Habit.category FROM UserTable, Buddies, Habit WHERE buddy2=${id} AND buddy1 = UserTable.ID AND buddy1HabitID = Habit.ID ORDER BY lastName ASC"
     , req.params)
         .then(data => {
