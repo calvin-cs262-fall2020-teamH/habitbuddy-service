@@ -80,7 +80,7 @@ INSERT INTO Buddies VALUES (1, 6, 1, 6);
 
 
 INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, totalBuddies, streak) VALUES ('Sample', 'user', 'sample@email.com', '(616)-123-1234', 'sample', 'password', '2020-08-22', 'https://th.bing.com/th/id/OIP.K6XYBPwgLPhvWH9BxDYfXAHaEN?pid=Api&rs=1', 'Reading', 'Study for 1 hour', 3, 0, false, 'light');
-INSERT INTO Habit VALUES (7, 'Study', 'School');
+INSERT INTO Habit(userID, habit, category) VALUES (7, 'Study', 'School');
 INSERT INTO Buddies VALUES (7, 1, 7, 1);
 INSERT INTO Buddies VALUES (7, 2, 7, 2);
 INSERT INTO Buddies VALUES (7, 3, 7, 3);
