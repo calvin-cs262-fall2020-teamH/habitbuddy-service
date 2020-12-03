@@ -183,12 +183,8 @@ function createUser(req, res, next) {
         values: values
     });
     db.one(stmt)
-        .then(function () {
-            res.status(200)
-            .json({
-                status: 'success',
-                message: 'Inserted one user'
-            });
+        .then(data => {
+            returnDataOr404(res, data);
         })
         .catch(err => {
             next(err);
@@ -198,12 +194,8 @@ function createUser(req, res, next) {
 function createHabit(req, res, next) {
     req.body.userID = parseInt(req.body.userID);
     db.one(`INSERT INTO Habit (userID, habit, category) VALUES ($(ID), $(habit), $(category)) RETURNING id`, req.body)
-        .then(function () {
-            res.status(200)
-            .json({
-                status: 'success',
-                message: 'Inserted one habit'
-            });
+        .then(data => {
+            returnDataOr404(res, data);
         })
         .catch(err => {
             next(err);
