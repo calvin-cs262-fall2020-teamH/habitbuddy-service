@@ -124,18 +124,32 @@ function updateUser(req, res, next) {
         });
 }
 
+// function createUser(req, res, next) {
+//     const {firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby,
+//          habitGoal } = req.body
+//     db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme) VALUES ($1, $2, $3, $4, $5, $6, TO_DATE($7, 'YYYY-MM-DD'), $8, $9, $10, $11, $12, $13, $14) RETURNING id`, 
+//     [firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, 
+//         0, 0, false, 'light'])
+//         .then(data => {
+//             res.send(data);
+//         })
+//         .catch(err => {
+//             next(err);
+//         });
+// }
+
 function createUser(req, res, next) {
-    const {firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby,
-         habitGoal } = req.body
-    db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme) VALUES ($1, $2, $3, $4, $5, $6, TO_DATE($7, 'YYYY-MM-DD'), $8, $9, $10, $11, $12, $13, $14) RETURNING id`, 
-    [firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, 
-        0, 0, false, 'light'])
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            next(err);
-        });
+    db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme) VALUES ($(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), TO_DATE($(dob), 'YYYY-MM-DD'), $(profileURL), $(hobby), $(habitGoal), 0, 0, false, 'light') RETURNING id`, req.body)
+    .then(function () {
+        res.status(200)
+          .json({
+            status: 'success',
+            message: 'Inserted one puppy'
+          });
+      })
+      .catch(function (err) {
+        return next(err);
+      });
 }
 
 function createHabit(req, res, next) {
