@@ -172,7 +172,7 @@ function updateHabit(req, res, next) {
 // }
 
 function createUser(req, res, next) {
-    let values = [req.body.firstName, req.body.lastName, 'test@mail.com', req.body.phone,
+    let values = [req.body.firstName, req.body.lastName, req.body.emailAddress, req.body.phone,
         req.body.username, req.body.password, req.body.dob, req.body.profileURL, req.body.hobby,
         req.body.habitGoal];
     console.log(req.body);
