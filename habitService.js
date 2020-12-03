@@ -175,8 +175,7 @@ function updateHabit(req, res, next) {
 
 function createUser(req, res, next) {
     let values = [req.body.firstName, req.body.lastName, req.body.emailAddress, req.body.phone,
-        req.body.username, req.body.password, req.body.profileURL, req.body.hobby,
-        req.body.habitGoal];
+        req.body.username, req.body.password, req.body.profileURL, req.body.hobby];
     console.log(req.body);
     let stmt = new PS({name: 'create-user', 
         text: "INSERT INTO UserTable (firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, totalBuddies, streak )"
