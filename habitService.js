@@ -177,7 +177,7 @@ function createUser(req, res, next) {
         req.body.habitGoal];
     let stmt = new PS({name: 'create-user', 
         text: "INSERT INTO UserTable (firstName, lastName, emailaddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme)"
-        + " VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 0, 0, false, 'light' ) RETURNING id",
+        + " VALUES ( $1, $2, 'test@mail.com', $4, $5, $6, $7, $8, $9, $10, 0, 0, false, 'light' ) RETURNING id",
         values: values
     });
     db.one(stmt)
