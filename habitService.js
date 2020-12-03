@@ -68,7 +68,7 @@ function readHelloMessage(req, res) {
 }
 
 function readUsers(req, res, next) {
-    db.many("SELECT UserTable.ID FROM UserTable, Habit WHERE Habit.category=$(category)", req.params)
+    db.many("SELECT UserTable.ID FROM UserTable, Habit WHERE Habit.category=$(category) AND Habit.userID = UserTable.ID", req.params)
         .then(data => {
             res.send(data);
         })
