@@ -33,6 +33,7 @@ router.get("/home/:id", readHome);
 router.get("/login/:username/:pass", login);
 
 router.put("/user/:id", updateUser);
+router.put("/habit/:id", updateHabit);
 router.post('/user', createUser);
 router.post('/habit', createHabit);
 router.post('/buddies', createBuddies);
@@ -124,6 +125,21 @@ function updateUser(req, res, next) {
         });
 }
 
+function updateHabit(req, res, next) {
+    db.none('UPDATE Habit set userID=$1, habit=$2, category=$3 where ID=$4',
+    [parseInt(req.body.userID), req.body.habit, req.body.category, parseInt(req.params.ID)])
+    .then(function () {
+      res.status(200)
+        .json({
+          status: 'success',
+          message: 'Updated habit'
+        });
+    })
+    .catch(function (err) {
+      return next(err);
+    });
+}
+
 // function createUser(req, res, next) {
 //     const {firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby,
 //          habitGoal } = req.body
@@ -145,7 +161,7 @@ function createUser(req, res, next) {
         res.status(200)
           .json({
             status: 'success',
-            message: 'Inserted one puppy'
+            message: 'Inserted one user'
           });
       })
       .catch(function (err) {
