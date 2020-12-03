@@ -178,10 +178,10 @@ function createUser(req, res, next) {
     console.log(req.body);
     let stmt = new PS({name: 'create-user', 
         text: "INSERT INTO UserTable (ID, firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme)"
-        + " VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 0, 0, false, 'light' ) RETURNING id",
+        + " VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 0, 0, false, 'light' )",
         values: values
     });
-    db.one(stmt)
+    db.none(stmt)
         .then(data => {
             res.send(data);
         })
