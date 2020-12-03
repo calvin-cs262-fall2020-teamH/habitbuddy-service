@@ -125,7 +125,11 @@ function updateUser(req, res, next) {
 }
 
 function createUser(req, res, next) {
-    db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme) VALUES ($(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal), 0, 0, false, 'light') RETURNING id`, req.body)
+    const {firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby,
+         habitGoal } = req.body
+    db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING id`, 
+    [firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, 
+        0, 0, false, 'light'])
         .then(data => {
             res.send(data);
         })
