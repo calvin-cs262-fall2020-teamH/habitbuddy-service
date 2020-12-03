@@ -17,6 +17,8 @@ const db = pgp({
     password: process.env.PASSWORD
 });
 
+const {PreparedStatement: PS} = pgp;
+
 // Configure the server and its routes.
 
 const express = require('express');
