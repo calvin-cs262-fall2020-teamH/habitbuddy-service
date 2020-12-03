@@ -125,7 +125,7 @@ function updateUser(req, res, next) {
 }
 
 function createUser(req, res, next) {
-    db.one(`INSERT INTO UserTable VALUES (firstName, lastName, email, phone, username, password, dob, profileURL, hobby, habitGoal, 0, 0, false, 'light'); VALUES ($(firstName), $(lastName), $(email), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal)) RETURNING id`, req.body)
+    db.one(`INSERT INTO UserTable (firstName, lastName, email, phone, username, password, dob, profileURL, hobby, habitGoal, 0, 0, false, 'light') VALUES ($(firstName), $(lastName), $(email), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal)) RETURNING id`, req.body)
         .then(data => {
             res.send(data);
         })
@@ -135,7 +135,7 @@ function createUser(req, res, next) {
 }
 
 function createHabit(req, res, next) {
-    db.one(`INSERT INTO Habit VALUES (userID, habit, category); VALUES ($(ID), $(habit), $(category)) RETURNING ID`, req.body)
+    db.one(`INSERT INTO Habit (userID, habit, category) VALUES ($(ID), $(habit), $(category)) RETURNING ID`, req.body)
         .then(data => {
             res.send(data);
         })
@@ -145,7 +145,7 @@ function createHabit(req, res, next) {
 }
 
 function createBuddies(req, res, next) {
-    db.one(`INSERT INTO Buddies VALUES (buddy1, buddy2, buddy1HabitID, buddy2HabitID); VALUES ($(userID), $(buddyID), $(userHabitID), $(buddyHabitID)) RETURNING id`, req.body)
+    db.one(`INSERT INTO Buddies (buddy1, buddy2, buddy1HabitID, buddy2HabitID) VALUES ($(userID), $(buddyID), $(userHabitID), $(buddyHabitID)) RETURNING id`, req.body)
         .then(data => {
             res.send(data);
         })
