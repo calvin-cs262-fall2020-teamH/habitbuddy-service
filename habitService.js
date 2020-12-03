@@ -126,8 +126,8 @@ function updateUser(req, res, next) {
 }
 
 function updateHabit(req, res, next) {
-    db.none('UPDATE Habit set userID=$1, habit=$2, category=$3 where ID=$4',
-    [parseInt(req.body.userID), req.body.habit, req.body.category, parseInt(req.params.id)])
+    db.none('UPDATE Habit SET habit=$1 WHERE ID=$2',
+    [parseInt(req.body.habit, parseInt(req.params.id)])
     .then(function () {
       res.status(200)
         .json({
