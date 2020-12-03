@@ -11,7 +11,7 @@ CREATE TABLE HabitCategory (
 
 -- Contains all user data including hobbies and the general habit goal, but not the specific category.
 CREATE TABLE UserTable (
-	ID integer PRIMARY KEY,
+	ID SERIAL PRIMARY KEY,
     firstName varchar(15),
     lastName varchar(15),
 	emailAddress varchar(50) NOT NULL,
