@@ -125,7 +125,7 @@ function updateUser(req, res, next) {
 }
 
 function createUser(req, res, next) {
-    db.one(`INSERT INTO UserTable (firstName, lastName, email, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme) VALUES ($(firstName), $(lastName), $(email), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal), 0, 0, false, 'light') RETURNING id`, req.body)
+    db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme) VALUES ($(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal), 0, 0, false, 'light') RETURNING id`, req.body)
         .then(data => {
             returnDataOr404(res, data);
         })
