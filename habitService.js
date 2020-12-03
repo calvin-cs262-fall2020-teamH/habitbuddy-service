@@ -172,12 +172,12 @@ function updateHabit(req, res, next) {
 // }
 
 function createUser(req, res, next) {
-    let values = [req.body.firstName, req.body.lastName, req.body.emailAddress, req.body.phone,
+    let values = [req.body.firstName, req.body.lastName, 'test@mail.com', req.body.phone,
         req.body.username, req.body.password, req.body.dob, req.body.profileURL, req.body.hobby,
         req.body.habitGoal];
     let stmt = new PS({name: 'create-user', 
         text: "INSERT INTO UserTable (firstName, lastName, emailaddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme)"
-        + " VALUES ( $1, $2, 'test@mail.com', $4, $5, $6, $7, $8, $9, $10, 0, 0, false, 'light' ) RETURNING id",
+        + " VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 0, 0, false, 'light' ) RETURNING id",
         values: values
     });
     db.one(stmt)
