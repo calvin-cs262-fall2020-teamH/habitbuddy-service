@@ -154,19 +154,37 @@ function updateHabit(req, res, next) {
 //         });
 // }
 
+// function createUser(req, res, next) {
+//     db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme)
+//      VALUES (${firstName}, ${lastName}, ${emailAddress}, ${phone}, ${username}, ${password}, TO_DATE(${dob}, 'YYYY-MM-DD'), ${profileURL}, ${hobby}, ${habitGoal}, 0, 0, false, 'light') RETURNING id`, req.body)
+//     .then(function () {
+//         res.status(200)
+//           .json({
+//             status: 'success',
+//             message: 'Inserted one user'
+//           });
+//       })
+//       .catch(function (err) {
+//         return next(err);
+//       });
+// }
+
 function createUser(req, res, next) {
-    db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme)
-     VALUES (${firstName}, ${lastName}, ${emailAddress}, ${phone}, ${username}, ${password}, TO_DATE(${dob}, 'YYYY-MM-DD'), ${profileURL}, ${hobby}, ${habitGoal}, 0, 0, false, 'light') RETURNING id`, req.body)
-    .then(function () {
-        res.status(200)
-          .json({
-            status: 'success',
-            message: 'Inserted one user'
-          });
-      })
-      .catch(function (err) {
-        return next(err);
-      });
+    let values = [req.body.firstName, req.body.lastName, req.body.emailAddress, req.body.phone,
+        req.body.username, req.body.password, req.body.dob, req.body.profileURL, req.body.hobby,
+        req.body.habitGoal];
+    let stmt = new PS({name: 'create=user', 
+        text: "INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme)"
+        + " VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 0, 0, false, 'light' ) RETURNING id",
+        values: values
+    });
+    db.one(stmt)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            next(err);
+        });
 }
 
 function createHabit(req, res, next) {
