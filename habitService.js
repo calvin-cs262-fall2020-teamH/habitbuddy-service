@@ -189,7 +189,7 @@ function createUser(req, res, next) {
 
 function createHabit(req, res, next) {
     req.body.userID = parseInt(req.body.userID);
-    db.one(`INSERT INTO Habit (userID, habit, category) VALUES ($(ID), $(habit), $(category)) RETURNING ID`, req.body)
+    db.one(`INSERT INTO Habit (userID, habit, category) VALUES ($(ID), $(habit), $(category)) RETURNING id`, req.body)
         .then(data => {
             res.send(data);
         })
