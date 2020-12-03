@@ -155,8 +155,8 @@ function updateHabit(req, res, next) {
 // }
 
 function createUser(req, res, next) {
-    db.none(`INSERT INTO UserTable(ID, firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme)
-     VALUES (8, ${firstName}, ${lastName}, ${emailAddress}, ${phone}, ${username}, ${password}, TO_DATE(${dob}, 'YYYY-MM-DD'), ${profileURL}, ${hobby}, ${habitGoal}, 0, 0, false, 'light')`, req.body)
+    db.none(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme)
+     VALUES (${firstName}, ${lastName}, ${emailAddress}, ${phone}, ${username}, ${password}, TO_DATE(${dob}, 'YYYY-MM-DD'), ${profileURL}, ${hobby}, ${habitGoal}, 0, 0, false, 'light') RETURNING id`, req.body)
     .then(function () {
         res.status(200)
           .json({
