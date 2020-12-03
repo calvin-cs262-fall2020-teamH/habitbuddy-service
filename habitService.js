@@ -173,9 +173,9 @@ function createUser(req, res, next) {
     let values = [req.body.firstName, req.body.lastName, req.body.emailAddress, req.body.phone,
         req.body.username, req.body.password, req.body.dob, req.body.profileURL, req.body.hobby,
         req.body.habitGoal];
-    let stmt = new PS({name: 'create=user', 
+    let stmt = new PS({name: 'create-user', 
         text: "INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme)"
-        + " VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 0, 0, FALSE, 'light' ) RETURNING id",
+        + " VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 0, 0, to_boolean('false'), 'light' ) RETURNING id",
         values: values
     });
     db.one(stmt)
