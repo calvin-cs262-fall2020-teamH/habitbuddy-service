@@ -125,7 +125,7 @@ function readUser(req, res, next) {
 }
 
 function readHome(req, res, next) {
-    db.oneOrNone('SELECT habit, firstName, lastName, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.ID = UserTable.ID', req.params)
+    db.oneOrNone('SELECT habit, firstName, lastName, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
