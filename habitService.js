@@ -34,6 +34,8 @@ router.get("/user/:id", readUser);
 router.get("/home/:id", readHome);
 router.get("/login/:username/:pass", login);
 
+router.get("/habits",readHabits);
+
 router.put("/user/:id", updateUser);
 router.put("/habit/:id", updateHabit);
 router.post('/user', createUser);
@@ -65,6 +67,17 @@ function returnDataOr404(res, data) {
 
 function readHelloMessage(req, res) {
     res.send('Hello, CS 262 HabitBuddy Service!');
+}
+
+//Delete
+function readHabits(req, res, next) {
+    db.many("SELECT * FROM Habit", req.params)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            next(err);
+        })
 }
 
 function readUsers(req, res, next) {
