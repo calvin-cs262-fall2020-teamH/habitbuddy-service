@@ -219,8 +219,6 @@ function createUser(req, res, next) {
             });
             db.one(stmt)
                 .then(data2 => {
-                    returnDataOr404(res, {id: data.id, habitid: data2.id});
-
                     //finds all the users who have a habit of the same category
                     let stmt = new PS({name: 'find-users', 
                         text: "SELECT ID, userID FROM Habit WHERE category = $1 AND userID != $2",
@@ -240,7 +238,9 @@ function createUser(req, res, next) {
                                         .catch(err => {
                                             next(err);
                                         });
-                                })
+                                });
+
+                                returnDataOr404(res, {id: data.id, habitid: data2.id});
                             })
                             .catch(err => {
                                 next(err);
