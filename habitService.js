@@ -206,13 +206,6 @@ function createUser(req, res, next) {
 
 function createHabit(req, res, next) {
     req.body.userID = parseInt(req.body.userID);
-    db.one(`INSERT INTO Habit (userID, habit, category) VALUES ($(ID), $(habit), $(category)) RETURNING id`, req.body)
-        .then(data => {
-            returnDataOr404(res, data);
-        })
-        .catch(err => {
-            next(err);
-        });
 
     let values = [req.body.userID, req.body.habit, req.body.category];
     console.log(req.body);
