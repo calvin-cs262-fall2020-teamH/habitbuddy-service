@@ -209,7 +209,21 @@ function createUser(req, res, next) {
     });
     db.one(stmt)
         .then(data => {
-            returnDataOr404(res, data);
+            //returnDataOr404(res, data);
+
+            let values = [data.id, req.body.habit, req.body.category]
+
+            let stmt = new PS({name: 'create-habit', 
+            text: "INSERT INTO Habit (userID, habit, category) VALUES ( $1, $2, $3 ) RETURNING habitid",
+            values: values
+            });
+            db.one(stmt)
+                .then(data2 => {
+                    returnDataOr404(res, {...data, ...data2});
+                })
+                .catch(err => {
+                    next(err);
+                });
         })
         .catch(err => {
             next(err);
