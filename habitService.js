@@ -202,6 +202,7 @@ function createUser(req, res, next) {
     let values = [req.body.firstName, req.body.lastName, req.body.emailAddress, req.body.phone,
         req.body.username, req.body.password, req.body.profileURL, req.body.hobby];
     console.log(req.body);
+    //creates the user
     let stmt = new PS({name: 'create-user', 
         text: "INSERT INTO UserTable (firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, totalBuddies, streak )"
         + " VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, 0, 0 ) RETURNING id",
@@ -209,10 +210,9 @@ function createUser(req, res, next) {
     });
     db.one(stmt)
         .then(data => {
-            //returnDataOr404(res, data);
-
             let values = [data.id, req.body.habit, req.body.category]
 
+            //creates the user's habits
             let stmt = new PS({name: 'create-habit', 
             text: "INSERT INTO Habit (userID, habit, category) VALUES ( $1, $2, $3 ) RETURNING id",
             values: values
@@ -220,6 +220,31 @@ function createUser(req, res, next) {
             db.one(stmt)
                 .then(data2 => {
                     returnDataOr404(res, {id: data.id, habitid: data2.id});
+
+                    //finds all the users who have a habit of the same category
+                    let stmt = new PS({name: 'find-users', 
+                        text: "SELECT ID, userID FROM Habit WHERE category = $1 AND userID != $2",
+                        values: [req.body.category, data.id]
+                        });
+
+                        db.many(stmt)
+                            .then(data3 => {
+                                //makes all users with the same category buddies
+                                data3.forEach(habit => {
+                                    let stmt = new PS({name: 'create-buddies', 
+                                    text: "INSERT INTO Buddies (buddy1, buddy2, buddy1HabitID, buddy2HabitID) VALUES ( $1, $2, $3, $4 )",
+                                    values: [data.id, habit.userID, data2.id, habit.ID]
+                                    });
+
+                                    db.none(stmt)
+                                        .catch(err => {
+                                            next(err);
+                                        });
+                                })
+                            })
+                            .catch(err => {
+                                next(err);
+                            });
                 })
                 .catch(err => {
                     next(err);
