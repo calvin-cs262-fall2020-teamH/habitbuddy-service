@@ -232,7 +232,7 @@ function createUser(req, res, next) {
                                 data3.forEach(habit => {
                                     let stmt = new PS({name: 'create-buddies', 
                                     text: "INSERT INTO Buddies (buddy1, buddy2, buddy1HabitID, buddy2HabitID) VALUES ( $1, $2, $3, $4 )",
-                                    values: [data.id, habit.userID, data2.id, habit.ID]
+                                    values: [data.id, habit.userid, data2.id, habit.id]
                                     });
 
                                     db.none(stmt)
