@@ -213,6 +213,20 @@ function createHabit(req, res, next) {
         .catch(err => {
             next(err);
         });
+
+    let values = [req.body.userID, req.body.habit, req.body.category];
+    console.log(req.body);
+    let stmt = new PS({name: 'create-habit', 
+        text: "INSERT INTO Habit (userID, habit, category) VALUES ( $1, $2, $3 ) RETURNING id",
+        values: values
+    });
+    db.one(stmt)
+        .then(data => {
+            returnDataOr404(res, data);
+        })
+        .catch(err => {
+            next(err);
+        });
 }
 
 function createBuddies(req, res, next) {
