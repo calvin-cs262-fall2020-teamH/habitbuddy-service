@@ -228,6 +228,7 @@ function createUser(req, res, next) {
                         db.many(stmt)
                             .then(data3 => {
                                 //makes all users with the same category buddies
+                                console.log(data3);
                                 data3.forEach(habit => {
                                     let stmt = new PS({name: 'create-buddies', 
                                     text: "INSERT INTO Buddies (buddy1, buddy2, buddy1HabitID, buddy2HabitID) VALUES ( $1, $2, $3, $4 )",
