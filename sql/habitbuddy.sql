@@ -16,7 +16,7 @@ CREATE TABLE UserTable (
     lastName varchar(15),
 	emailAddress varchar(50) NOT NULL,
     phone varchar(20) NOT NULL,
-	username varchar(50) NOT NULL,
+	username varchar(50) NOT NULL UNIQUE,
     password varchar(20) NOT NULL,
     profileURL varchar(300) NOT NULL,
     hobby varchar(120),
