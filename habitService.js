@@ -34,13 +34,9 @@ router.get("/user/:id", readUser);
 router.get("/home/:id", readHome);
 router.get("/login/:username/:pass", login);
 
-router.get("/habits", readHabits);
-router.get("/userList", readAllUsers);
-
 router.put("/user/:id", updateUser);
 router.put("/habit/:id", updateHabit);
 router.post('/user', createUser);
-router.post('/habit', createHabit);
 router.post('/buddies', createBuddies);
 router.delete('/user/:id', deleteUser);
 router.delete('/user/:userID/:notFriendID', deleteBuddy);
@@ -68,28 +64,6 @@ function returnDataOr404(res, data) {
 
 function readHelloMessage(req, res) {
     res.send('Hello, CS 262 HabitBuddy Service!');
-}
-
-//Delete
-function readHabits(req, res, next) {
-    db.many("SELECT * FROM Habit", req.params)
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            next(err);
-        })
-}
-
-//Delete
-function readAllUsers(req, res, next) {
-    db.many("SELECT * FROM UserTable", req.params)
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            next(err);
-        })
 }
 
 function readUsers(req, res, next) {
@@ -169,35 +143,6 @@ function updateHabit(req, res, next) {
     });
 }
 
-// function createUser(req, res, next) {
-//     const {firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby,
-//          habitGoal } = req.body
-//     db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme) VALUES ($1, $2, $3, $4, $5, $6, TO_DATE($7, 'YYYY-MM-DD'), $8, $9, $10, $11, $12, $13, $14) RETURNING id`, 
-//     [firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, 
-//         0, 0, false, 'light'])
-//         .then(data => {
-//             res.send(data);
-//         })
-//         .catch(err => {
-//             next(err);
-//         });
-// }
-
-// function createUser(req, res, next) {
-//     db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme)
-//      VALUES (${firstName}, ${lastName}, ${emailAddress}, ${phone}, ${username}, ${password}, TO_DATE(${dob}, 'YYYY-MM-DD'), ${profileURL}, ${hobby}, ${habitGoal}, 0, 0, false, 'light') RETURNING id`, req.body)
-//     .then(function () {
-//         res.status(200)
-//           .json({
-//             status: 'success',
-//             message: 'Inserted one user'
-//           });
-//       })
-//       .catch(function (err) {
-//         return next(err);
-//       });
-// }
-
 function createUser(req, res, next) {
     let values = [req.body.firstName, req.body.lastName, req.body.emailAddress, req.body.phone,
         req.body.username, req.body.password, req.body.profileURL, req.body.hobby];
@@ -250,24 +195,6 @@ function createUser(req, res, next) {
                 .catch(err => {
                     next(err);
                 });
-        })
-        .catch(err => {
-            next(err);
-        });
-}
-
-function createHabit(req, res, next) {
-    req.body.userID = parseInt(req.body.userID);
-
-    let values = [req.body.userID, req.body.habit, req.body.category];
-    console.log(req.body);
-    let stmt = new PS({name: 'create-habit', 
-        text: "INSERT INTO Habit (userID, habit, category) VALUES ( $1, $2, $3 ) RETURNING id",
-        values: values
-    });
-    db.one(stmt)
-        .then(data => {
-            returnDataOr404(res, data);
         })
         .catch(err => {
             next(err);
