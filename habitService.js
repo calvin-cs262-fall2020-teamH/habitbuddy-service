@@ -214,12 +214,12 @@ function createUser(req, res, next) {
             let values = [data.id, req.body.habit, req.body.category]
 
             let stmt = new PS({name: 'create-habit', 
-            text: "INSERT INTO Habit (userID, habit, category) VALUES ( $1, $2, $3 ) RETURNING habitid",
+            text: "INSERT INTO Habit (userID, habit, category) VALUES ( $1, $2, $3 ) RETURNING id",
             values: values
             });
             db.one(stmt)
                 .then(data2 => {
-                    returnDataOr404(res, {...data, ...data2});
+                    returnDataOr404(res, {id: data.id, habitid: data2.id});
                 })
                 .catch(err => {
                     next(err);
