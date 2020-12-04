@@ -34,7 +34,8 @@ router.get("/user/:id", readUser);
 router.get("/home/:id", readHome);
 router.get("/login/:username/:pass", login);
 
-router.get("/habits",readHabits);
+router.get("/habits", readHabits);
+router.get("/userList", readAllUsers);
 
 router.put("/user/:id", updateUser);
 router.put("/habit/:id", updateHabit);
@@ -72,6 +73,17 @@ function readHelloMessage(req, res) {
 //Delete
 function readHabits(req, res, next) {
     db.many("SELECT * FROM Habit", req.params)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            next(err);
+        })
+}
+
+//Delete
+function readAllUsers(req, res, next) {
+    db.many("SELECT * FROM UserTable", req.params)
         .then(data => {
             res.send(data);
         })
