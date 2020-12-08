@@ -158,7 +158,7 @@ function updateHabit(req, res, next) {
 }
 
 function updateStreak(req, res, next) {
-    db.none(`UPDATE UserTable SET streak=$(body.streak) WHERE ID=$(params.id)`, req)
+    db.oneOrNone(`UPDATE UserTable SET streak=$(body.streak) WHERE ID=$(params.id)`, req)
         .then(function () {
             res.status(200)
             .json({
