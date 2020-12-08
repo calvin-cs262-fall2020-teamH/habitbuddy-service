@@ -37,7 +37,7 @@ router.get("/streak/:id", readStreaks);
 
 router.put("/user/:id", updateUser);
 router.put("/habit/:id", updateHabit);
-router.put("/streak/:id", updateStreak);
+//router.put("/streak/:id", updateStreak);
 router.post('/user', createUser);
 router.post('/buddies', createBuddies);
 router.delete('/user/:id', deleteUser);
