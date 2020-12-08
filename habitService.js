@@ -133,7 +133,7 @@ function login(req, res, next) {
 }
 
 function updateUser(req, res, next) {
-    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(body.email), phone=$(body.phone), profileURL=$(body.URL), hobby=$(body.hobby), habitGoal=$(body.habitGoal) WHERE id=${params.id} RETURNING id`, req)
+    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(body.email), phone=$(body.phone), profileURL=$(body.URL), hobby=$(body.hobby), habitGoal=$(body.habitGoal) WHERE id=$(params.id) RETURNING id`, req)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -143,7 +143,7 @@ function updateUser(req, res, next) {
 }
 
 function updateHabit(req, res, next) {
-    db.none('UPDATE Habit SET habit=$1 WHERE ID=$2',
+    db.none('UPDATE Habit SET habit=$1 WHERE userID=$(id)',
     [req.body.habit, parseInt(req.params.id)])
     .then(function () {
       res.status(200)
