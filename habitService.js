@@ -33,9 +33,11 @@ router.get("/buddies/:id", readBuddies)
 router.get("/user/:id", readUser);
 router.get("/home/:id", readHome);
 router.get("/login/:username/:pass", login);
+router.get("/streak/:id", readStreaks);
 
 router.put("/user/:id", updateUser);
 router.put("/habit/:id", updateHabit);
+router.put("/streak/:id", updateStreak);
 router.post('/user', createUser);
 router.post('/buddies', createBuddies);
 router.delete('/user/:id', deleteUser);
@@ -106,6 +108,18 @@ function readHome(req, res, next) {
         .catch(err => {
             next(err);
         });
+}
+
+function readStreaks(req, res, next) {
+    db.many("SELECT Usertable.ID, firstName, lastName, streak FROM UserTable, Buddies WHERE buddy1=${id} AND buddy2 = UserTable.ID"
+    + " UNION SELECT Usertable.ID, firstName, lastName, streak FROM UserTable, Buddies WHERE buddy2=${id} AND buddy1 = UserTable.ID ORDER BY lastName ASC"
+    , req.params)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            next(err);
+        })
 }
 
 function login(req, res, next) {
