@@ -222,10 +222,7 @@ function deleteUser(req, res, next) {
 }
 
 function deleteBuddy(req, res, next) {
-    db.oneOrNone(`DELETE FROM Buddies WHERE buddy1=${userID} AND buddy2=${notFriendID} RETURNING buddy1`, req.params)
-        .then(data => {
-            returnDataOr404(res, data);
-        })
+    db.none(`DELETE FROM Buddies WHERE (buddy1=${userID} AND buddy2=${notFriendID}) OR (buddy1=${notFriendID} AND buddy2=${userID})`, req.params)
         .catch(err => {
             next(err);
         });
