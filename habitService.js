@@ -37,7 +37,7 @@ router.get("/streak/:id", readStreaks);
 
 router.put("/user/:id", updateUser);
 router.put("/habit/:id", updateHabit);
-//router.put("/streak/:id", updateStreak);
+router.put("/streak/:id", updateStreak);
 router.post('/user', createUser);
 router.post('/buddies', createBuddies);
 router.delete('/user/:id', deleteUser);
@@ -155,6 +155,16 @@ function updateHabit(req, res, next) {
     .catch(function (err) {
       return next(err);
     });
+}
+
+function updateStreak(req, res, next) {
+    db.oneOrNone(`UPDATE UserTable SET streak=$(body.streak) WHERE id=${params.id} RETURNING id`, req)
+        .then(data => {
+            returnDataOr404(res, data);
+        })
+        .catch(err => {
+            next(err);
+        });
 }
 
 function createUser(req, res, next) {
