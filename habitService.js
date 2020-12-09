@@ -133,13 +133,29 @@ function login(req, res, next) {
 }
 
 function updateUser(req, res, next) {
-    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(body.email), phone=$(body.phone), profileURL=$(body.URL), hobby=$(body.hobby), habitGoal=$(body.habitGoal) WHERE id=$(params.id) RETURNING id`, req)
-        .then(data => {
-            returnDataOr404(res, data);
-        })
-        .catch(err => {
-            next(err);
+    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(body.emailAddress), phone=$(body.phone), hobby=$(body.hobby), WHERE id=$(params.id)`, req)
+    .then(function () {
+        res.status(200)
+        .json({
+            status: 'success',
+            message: 'Updated user'
         });
+    })
+    .catch(err => {
+        next(err);
+    });
+
+    db.oneOrNone(`UPDATE Habit SET habit=$(body.habit) WHERE userID=$(params.id)`, req)
+    .then(function () {
+        res.status(200)
+        .json({
+            status: 'success',
+            message: 'Updated user'
+        });
+    })
+    .catch(err => {
+        next(err);
+    });
 }
 
 function updateHabit(req, res, next) {
