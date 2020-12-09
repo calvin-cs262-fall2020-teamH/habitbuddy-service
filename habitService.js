@@ -17,6 +17,8 @@ const db = pgp({
     password: process.env.PASSWORD
 });
 
+const {PreparedStatement: PS} = pgp;
+
 // Configure the server and its routes.
 
 const express = require('express');
@@ -33,8 +35,8 @@ router.get("/home/:id", readHome);
 router.get("/login/:username/:pass", login);
 
 router.put("/user/:id", updateUser);
+router.put("/habit/:id", updateHabit);
 router.post('/user', createUser);
-router.post('/habit', createHabit);
 router.post('/buddies', createBuddies);
 router.delete('/user/:id', deleteUser);
 router.delete('/user/:userID/:notFriendID', deleteBuddy);
@@ -65,7 +67,7 @@ function readHelloMessage(req, res) {
 }
 
 function readUsers(req, res, next) {
-    db.many("SELECT UserTable.ID FROM UserTable, Habit WHERE Habit.category=$(category)", req.params)
+    db.many("SELECT UserTable.ID FROM UserTable, Habit WHERE Habit.category=$(category) AND Habit.userID = UserTable.ID", req.params)
         .then(data => {
             res.send(data);
         })
@@ -75,7 +77,9 @@ function readUsers(req, res, next) {
 }
 
 function readBuddies(req, res, next) {
-    db.many("SELECT Usertable.ID, firstName, lastName, emailAddress, phone, profileURL, hobby, habit, streak, Habit.category FROM UserTable, Buddies, Habit WHERE buddy1=${id} AND buddy2 = UserTable.ID AND buddy1HabitID = Habit.ID ORDER BY lastName ASC", req.params)
+    db.many("SELECT Usertable.ID, firstName, lastName, emailAddress, phone, profileURL, hobby, habit, streak, Habit.category FROM UserTable, Buddies, Habit WHERE buddy1=${id} AND buddy2 = UserTable.ID AND buddy2HabitID = Habit.ID"
+    + " UNION SELECT Usertable.ID, firstName, lastName, emailAddress, phone, profileURL, hobby, habit, streak, Habit.category FROM UserTable, Buddies, Habit WHERE buddy2=${id} AND buddy1 = UserTable.ID AND buddy1HabitID = Habit.ID ORDER BY lastName ASC"
+    , req.params)
         .then(data => {
             res.send(data);
         })
@@ -95,7 +99,7 @@ function readUser(req, res, next) {
 }
 
 function readHome(req, res, next) {
-    db.oneOrNone('SELECT habit, firstName, lastName, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.ID = UserTable.ID', req.params)
+    db.oneOrNone('SELECT habit, firstName, lastName, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -124,20 +128,73 @@ function updateUser(req, res, next) {
         });
 }
 
-function createUser(req, res, next) {
-    db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, habitGoal, totalBuddies, streak) VALUES ($(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), $(profileURL), $(hobby), $(habitGoal), 0, 0) RETURNING id`, req.body)
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            next(err);
+function updateHabit(req, res, next) {
+    db.none('UPDATE Habit SET habit=$1 WHERE ID=$2',
+    [req.body.habit, parseInt(req.params.id)])
+    .then(function () {
+      res.status(200)
+        .json({
+          status: 'success',
+          message: 'Updated habit'
         });
+    })
+    .catch(function (err) {
+      return next(err);
+    });
 }
 
-function createHabit(req, res, next) {
-    db.one(`INSERT INTO Habit (userID, habit, category) VALUES ($(ID), $(habit), $(category)) RETURNING ID`, req.body)
+function createUser(req, res, next) {
+    let values = [req.body.firstName, req.body.lastName, req.body.emailAddress, req.body.phone,
+        req.body.username, req.body.password, req.body.profileURL, req.body.hobby];
+    console.log(req.body);
+    //creates the user
+    let stmt = new PS({name: 'create-user', 
+        text: "INSERT INTO UserTable (firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, totalBuddies, streak )"
+        + " VALUES ( $1, $2, $3, $4, $5, $6, $7, $8, 0, 0 ) RETURNING id",
+        values: values
+    });
+    db.one(stmt)
         .then(data => {
-            res.send(data);
+            let values = [data.id, req.body.habit, req.body.category]
+
+            //creates the user's habits
+            let stmt = new PS({name: 'create-habit', 
+            text: "INSERT INTO Habit (userID, habit, category) VALUES ( $1, $2, $3 ) RETURNING id",
+            values: values
+            });
+            db.one(stmt)
+                .then(data2 => {
+                    //finds all the users who have a habit of the same category
+                    let stmt = new PS({name: 'find-users', 
+                        text: "SELECT ID, userID FROM Habit WHERE category = $1 AND userID != $2",
+                        values: [req.body.category, data.id]
+                        });
+
+                        db.many(stmt)
+                            .then(data3 => {
+                                //makes all users with the same category buddies
+                                console.log(data3);
+                                data3.forEach(habit => {
+                                    let stmt = new PS({name: 'create-buddies', 
+                                    text: "INSERT INTO Buddies (buddy1, buddy2, buddy1HabitID, buddy2HabitID) VALUES ( $1, $2, $3, $4 )",
+                                    values: [data.id, habit.userid, data2.id, habit.id]
+                                    });
+
+                                    db.none(stmt)
+                                        .catch(err => {
+                                            next(err);
+                                        });
+                                });
+
+                                returnDataOr404(res, {id: data.id, habitid: data2.id});
+                            })
+                            .catch(err => {
+                                next(err);
+                            });
+                })
+                .catch(err => {
+                    next(err);
+                });
         })
         .catch(err => {
             next(err);
