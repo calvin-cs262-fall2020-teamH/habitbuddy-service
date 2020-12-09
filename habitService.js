@@ -75,7 +75,7 @@ function readUsers(req, res, next) {
 }
 
 function readBuddies(req, res, next) {
-    db.many("SELECT Usertable.ID, firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, streak, Habit.category FROM UserTable, Buddies, Habit WHERE buddy1=${id} AND buddy2 = UserTable.ID AND buddy1HabitID = Habit.ID ORDER BY lastName ASC", req.params)
+    db.many("SELECT Usertable.ID, firstName, lastName, emailAddress, phone, profileURL, hobby, habit, streak, Habit.category FROM UserTable, Buddies, Habit WHERE buddy1=${id} AND buddy2 = UserTable.ID AND buddy1HabitID = Habit.ID ORDER BY lastName ASC", req.params)
         .then(data => {
             res.send(data);
         })
@@ -85,7 +85,7 @@ function readBuddies(req, res, next) {
 }
 
 function readUser(req, res, next) {
-    db.oneOrNone('SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habitGoal, habit, category, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
+    db.oneOrNone('SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habit, category, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -115,7 +115,7 @@ function login(req, res, next) {
 }
 
 function updateUser(req, res, next) {
-    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(body.email), phone=$(body.phone), profileURL=$(body.URL), hobby=$(body.hobby), habitGoal=$(body.habitGoal) WHERE id=${params.id} RETURNING id`, req)
+    db.oneOrNone(`UPDATE UserTable, Habit SET emailAddress=$(body.email), phone=$(body.phone), profileURL=$(body.URL), hobby=$(body.hobby), habit=$(body.habit) WHERE id=${params.id} RETURNING id`, req)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -125,7 +125,7 @@ function updateUser(req, res, next) {
 }
 
 function createUser(req, res, next) {
-    db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, dob, profileURL, hobby, habitGoal, totalBuddies, streak, notifications, theme) VALUES ($(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), $(dob), $(profileURL), $(hobby), $(habitGoal), 0, 0, false, 'light') RETURNING id`, req.body)
+    db.one(`INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, habitGoal, totalBuddies, streak) VALUES ($(firstName), $(lastName), $(emailAddress), $(phone), $(username), $(password), $(profileURL), $(hobby), $(habitGoal), 0, 0) RETURNING id`, req.body)
         .then(data => {
             res.send(data);
         })
