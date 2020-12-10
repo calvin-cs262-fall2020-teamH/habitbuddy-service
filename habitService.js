@@ -93,15 +93,7 @@ function readBuddies(req, res, next) {
 function readUser(req, res, next) {
     db.oneOrNone('SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habit, category, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
         .then(data => {
-            db.many("SELECT buddy2 FROM Buddies WHERE buddy1=${id} UNION SELECT buddy1 FROM Buddies WHERE buddy2=${id}", req.params)
-                .then(data2 => {
-                    data.totalBuddies = data2.length;
-                    returnDataOr404(res, data);
-                })
-                .catch(err => {
-                    next(err);
-                })
-
+            returnDataOr404(res, data);
         })
         .catch(err => {
             next(err);
@@ -111,7 +103,14 @@ function readUser(req, res, next) {
 function readHome(req, res, next) {
     db.oneOrNone('SELECT habit, firstName, lastName, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
         .then(data => {
-            returnDataOr404(res, data);
+            db.many("SELECT buddy2 FROM Buddies WHERE buddy1=${id} UNION SELECT buddy1 FROM Buddies WHERE buddy2=${id}", req.params)
+            .then(data2 => {
+                data.totalBuddies = data2.length;
+                returnDataOr404(res, data);
+            })
+            .catch(err => {
+                next(err);
+            })
         })
         .catch(err => {
             next(err);
