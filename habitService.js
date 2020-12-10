@@ -123,8 +123,8 @@ function updateUser(req, res, next) {
         .then(data => {
             returnDataOr404(res, data);
         })
-        .catch(err => {
-            next(err);
+        .catch(function (err) {
+            return next(err);
         });
 }
 
