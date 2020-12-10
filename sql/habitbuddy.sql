@@ -67,13 +67,17 @@ INSERT INTO Habit(userID, habit, category) VALUES (2, '50 Squats a day', 'Exerci
 INSERT INTO Habit(userID, habit, category) VALUES (3, 'Running a mile every two days', 'Exercise');
 INSERT INTO Habit(userID, habit, category) VALUES (4, 'Taking a 30 minute nap each day', 'Leisure');
 INSERT INTO Habit(userID, habit, category) VALUES (5, 'Watching movies from the AFI 100', 'Leisure');
-INSERT INTO Habit(userID, habit, category) VALUES (6, 'Studying for CS262', 'School');
+INSERT INTO Habit(userID, habit, category) VALUES (6, 'Studying for CS262', 'Leisure');
 
 INSERT INTO Buddies VALUES (1, 2, 1, 2);
-INSERT INTO Buddies VALUES (3, 5, 3, 5);
-INSERT INTO Buddies VALUES (4, 6, 4, 6);
-INSERT INTO Buddies VALUES (2, 1, 2, 1);
-INSERT INTO Buddies VALUES (5, 3, 5, 3);
-INSERT INTO Buddies VALUES (6, 4, 6, 4);
 INSERT INTO Buddies VALUES (1, 3, 1, 3);
-INSERT INTO Buddies VALUES (1, 6, 1, 6);
+-- INSERT INTO Buddies VALUES (1, 6, 1, 6);
+INSERT INTO Buddies VALUES (2, 1, 2, 1);
+INSERT INTO Buddies VALUES (2, 3, 2, 3);
+INSERT INTO Buddies VALUES (3, 1, 3, 1);
+INSERT INTO Buddies VALUES (3, 2, 3, 1);
+INSERT INTO Buddies VALUES (4, 5, 4, 5);
+INSERT INTO Buddies VALUES (5, 4, 5, 4);
+INSERT INTO Buddies VALUES (5, 6, 5, 6);
+INSERT INTO Buddies VALUES (6, 4, 6, 4);
+INSERT INTO Buddies VALUES (6, 5, 6, 5);
