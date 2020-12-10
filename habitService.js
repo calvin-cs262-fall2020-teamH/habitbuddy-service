@@ -272,8 +272,15 @@ function deleteUser(req, res, next) {
 }
 
 function deleteBuddy(req, res, next) {
-    db.none(`DELETE FROM Buddies WHERE (buddy1=${userID} AND buddy2=${notFriendID}) OR (buddy1=${notFriendID} AND buddy2=${userID})`, req.params)
-        .catch(err => {
+    db.oneOrNone(`DELETE FROM Buddies WHERE (buddy1=${userID} AND buddy2=${notFriendID}) OR (buddy1=${notFriendID} AND buddy2=${userID})`, req.params)
+    .then(function () {
+        res.status(200)
+        .json({
+            status: 'success',
+            message: 'Deleted buddy'
+        });
+    })    
+    .catch(err => {
             next(err);
         });
 }
