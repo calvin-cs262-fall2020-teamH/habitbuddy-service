@@ -101,7 +101,7 @@ function readUser(req, res, next) {
 }
 
 function readHome(req, res, next) {
-    db.oneOrNone('SELECT habit, firstName, lastName, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
+    db.oneOrNone('SELECT habit, firstName, lastName, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
         .then(data => {
             db.many("SELECT buddy2 FROM Buddies WHERE buddy1=${id} UNION SELECT buddy1 FROM Buddies WHERE buddy2=${id}", req.params)
             .then(data2 => {
