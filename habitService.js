@@ -133,7 +133,7 @@ function login(req, res, next) {
 }
 
 function updateUser(req, res, next) {
-    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(body.emailAddress), phone=$(body.phone), hobby=$(body.hobby), WHERE id=$(params.id)`, req)
+    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(body.emailAddress), phone=$(body.phone), hobby=$(body.hobby), WHERE ID=$(params.id)`, req)
     .then(function () {
         res.status(200)
         .json({
