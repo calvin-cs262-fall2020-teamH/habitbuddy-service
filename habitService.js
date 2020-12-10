@@ -95,7 +95,7 @@ function readUser(req, res, next) {
         .then(data => {
             db.many("SELECT buddy2 FROM Buddies WHERE buddy1=${id} UNION SELECT buddy1 FROM Buddies WHERE buddy2=${id}", req.params)
                 .then(data2 => {
-                    data.totalBuddies = data2.count();
+                    data.totalBuddies = data2.length;
                     returnDataOr404(res, data);
                 })
                 .catch(err => {
