@@ -54,7 +54,7 @@ INSERT INTO HabitCategory VALUES ('Leisure');
 INSERT INTO HabitCategory VALUES ('Health');
 INSERT INTO HabitCategory VALUES ('Spiritual');
 
-INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, totalBuddies, streak) VALUES ('Andrew', 'Baker', 'andbaker99@gmail.com', '(765)-667-5640', 'andba', 'password', 'https://i.imgur.com/SKHwTiF.jpg', 'Reading Science Fiction', 3, 0);
+INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, totalBuddies, streak) VALUES ('Andrew', 'Baker', 'andbaker99@gmail.com', '(765)-667-5640', 'andba', 'password', 'https://i.imgur.com/SKHwTiF.jpg', 'Reading Science Fiction', 3, 4);
 INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, totalBuddies, streak) VALUES ('Dawson', 'Buist', 'Dawson@email.com', '(616)-123-1234', 'dawbu', 'password', 'https://i.imgur.com/SxGCXta.png', 'Playing Video Games', 1, 0);
 INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, totalBuddies, streak) VALUES ('Joe', 'Pastucha', 'Joe@email.com', '(616)-123-1234', 'joepa', 'password', 'https://i.imgur.com/NORjyKE.png', 'Snow Boarding', 1, 0);
 INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, totalBuddies, streak) VALUES ('Belina', 'Sainju', 'Belina@email.com', '(616)-123-1234', 'belsa', 'password', 'https://i.imgur.com/hWfU2ej.jpg', 'Reading', 1, 0);
