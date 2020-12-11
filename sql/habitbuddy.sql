@@ -62,8 +62,8 @@ INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, passwo
 INSERT INTO UserTable(firstName, lastName, emailAddress, phone, username, password, profileURL, hobby, totalBuddies, streak) VALUES ('Kelsey', 'Yen', 'Kelsey@email.com', '(616)-123-1234', 'kelye', 'password', 'https://i.imgur.com/go0Wgd9.png', 'Reading', 1, 0);
 
 
-INSERT INTO Habit(userID, habit, category) VALUES (1, 'Doing 100 pushups a day', 'Exercise');
-INSERT INTO Habit(userID, habit, category) VALUES (2, '50 Squats a day', 'Exercise');
+INSERT INTO Habit(userID, habit, category) VALUES (1, 'Run a mile each day', 'Exercise');
+INSERT INTO Habit(userID, habit, category) VALUES (2, 'Doing 100 pushups a day', 'Exercise');
 INSERT INTO Habit(userID, habit, category) VALUES (3, 'Running a mile every two days', 'Exercise');
 INSERT INTO Habit(userID, habit, category) VALUES (4, 'Taking a 30 minute nap each day', 'Leisure');
 INSERT INTO Habit(userID, habit, category) VALUES (5, 'Watching movies from the AFI 100', 'Leisure');
