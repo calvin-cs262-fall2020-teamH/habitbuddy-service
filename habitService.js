@@ -38,6 +38,7 @@ router.get("/streak/:id", readStreaks);
 router.put("/user/:id", updateUser);
 router.put("/habit/:id", updateHabit);
 router.put("/streak/:id", updateStreak);
+router.put("/password/:passwordOld/:passwordNew/:id", updatePassword);
 router.post('/user', createUser);
 router.post('/buddies', createBuddies);
 router.delete('/user/:id', deleteUser);
@@ -158,6 +159,20 @@ function updateUser(req, res, next) {
         .json({
             status: 'success',
             message: 'Updated user'
+        });
+    })
+    .catch(err => {
+        next(err);
+    });
+}
+
+function updatePassword(req, res, next) {
+    db.oneOrNone(`UPDATE UserTable SET password=$(params.passwordNew) WHERE ID=$(params.id) AND password=$(params.passwordOld)`, req)
+    .then(function () {
+        res.status(200)
+        .json({
+            status: 'success',
+            message: 'New password'
         });
     })
     .catch(err => {
