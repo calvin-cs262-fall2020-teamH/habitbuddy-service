@@ -33,9 +33,12 @@ router.get("/buddies/:id", readBuddies)
 router.get("/user/:id", readUser);
 router.get("/home/:id", readHome);
 router.get("/login/:username/:pass", login);
+router.get("/streak/:id", readStreaks);
 
 router.put("/user/:id", updateUser);
 router.put("/habit/:id", updateHabit);
+router.put("/streak/:id", updateStreak);
+router.put("/password/:passwordOld/:passwordNew/:id", updatePassword);
 router.post('/user', createUser);
 router.post('/buddies', createBuddies);
 router.delete('/user/:id', deleteUser);
@@ -89,7 +92,7 @@ function readBuddies(req, res, next) {
 }
 
 function readUser(req, res, next) {
-    db.oneOrNone('SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habit, category, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
+    db.oneOrNone('SELECT UserTable.firstName, lastName, emailAddress, phone, profileURL, hobby, habit, category, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
         .then(data => {
             returnDataOr404(res, data);
         })
@@ -99,13 +102,32 @@ function readUser(req, res, next) {
 }
 
 function readHome(req, res, next) {
-    db.oneOrNone('SELECT habit, firstName, lastName, totalBuddies, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
+    db.oneOrNone('SELECT habit, firstName, lastName, streak FROM UserTable, Habit WHERE UserTable.ID=${id} AND Habit.userID = UserTable.ID', req.params)
         .then(data => {
-            returnDataOr404(res, data);
+            db.many("SELECT buddy2 FROM Buddies WHERE buddy1=${id} UNION SELECT buddy1 FROM Buddies WHERE buddy2=${id}", req.params)
+            .then(data2 => {
+                data.totalbuddies = data2.length;
+                returnDataOr404(res, data);
+            })
+            .catch(err => {
+                next(err);
+            })
         })
         .catch(err => {
             next(err);
         });
+}
+
+function readStreaks(req, res, next) {
+    db.many("SELECT Usertable.ID, firstName, lastName, streak FROM UserTable, Buddies WHERE buddy1=${id} AND buddy2 = UserTable.ID"
+    + " UNION SELECT Usertable.ID, firstName, lastName, streak FROM UserTable, Buddies WHERE buddy2=${id} AND buddy1 = UserTable.ID ORDER BY lastName ASC"
+    , req.params)
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            next(err);
+        })
 }
 
 function login(req, res, next) {
@@ -119,18 +141,47 @@ function login(req, res, next) {
 }
 
 function updateUser(req, res, next) {
-    db.oneOrNone(`UPDATE UserTable, Habit SET emailAddress=$(body.email), phone=$(body.phone), profileURL=$(body.URL), hobby=$(body.hobby), habit=$(body.habit) WHERE id=${params.id} RETURNING id`, req)
-        .then(data => {
-            returnDataOr404(res, data);
-        })
-        .catch(function (err) {
-            return next(err);
+    db.oneOrNone(`UPDATE UserTable SET emailAddress=$(body.emailAddress), phone=$(body.phone), hobby=$(body.hobby) WHERE ID=$(params.id)`, req)
+    .then(function () {
+        res.status(200)
+        .json({
+            status: 'success',
+            message: 'Updated user'
         });
+    })
+    .catch(err => {
+        next(err);
+    });
+
+    db.oneOrNone(`UPDATE Habit SET habit=$(body.habit) WHERE userID=$(params.id)`, req)
+    .then(function () {
+        res.status(200)
+        .json({
+            status: 'success',
+            message: 'Updated user'
+        });
+    })
+    .catch(err => {
+        next(err);
+    });
+}
+
+function updatePassword(req, res, next) {
+    db.oneOrNone(`UPDATE UserTable SET password=$(params.passwordNew) WHERE ID=$(params.id) AND password=$(params.passwordOld)`, req)
+    .then(function () {
+        res.status(200)
+        .json({
+            status: 'success',
+            message: 'New password'
+        });
+    })
+    .catch(err => {
+        next(err);
+    });
 }
 
 function updateHabit(req, res, next) {
-    db.none('UPDATE Habit SET habit=$1 WHERE ID=$2',
-    [req.body.habit, parseInt(req.params.id)])
+    db.none('UPDATE Habit SET habit=$(body.habit) WHERE userID=$(params.id)', req)
     .then(function () {
       res.status(200)
         .json({
@@ -141,6 +192,20 @@ function updateHabit(req, res, next) {
     .catch(function (err) {
       return next(err);
     });
+}
+
+function updateStreak(req, res, next) {
+    db.oneOrNone(`UPDATE UserTable SET streak=$(body.streak) WHERE ID=$(params.id)`, req)
+        .then(function () {
+            res.status(200)
+            .json({
+                status: 'success',
+                message: 'Updated streak'
+            });
+        })
+        .catch(err => {
+            next(err);
+        });
 }
 
 function createUser(req, res, next) {
@@ -222,11 +287,15 @@ function deleteUser(req, res, next) {
 }
 
 function deleteBuddy(req, res, next) {
-    db.oneOrNone(`DELETE FROM Buddies WHERE buddy1=${userID} AND buddy2=${notFriendID} RETURNING buddy1`, req.params)
-        .then(data => {
-            returnDataOr404(res, data);
-        })
-        .catch(err => {
+    db.oneOrNone(`DELETE FROM Buddies WHERE (buddy1=$(userID) AND buddy2=$(notFriendID)) OR (buddy1=$(notFriendID) AND buddy2=$(userID))`, req.params)
+    .then(function () {
+        res.status(200)
+        .json({
+            status: 'success',
+            message: 'Deleted buddy'
+        });
+    })    
+    .catch(err => {
             next(err);
         });
 }
